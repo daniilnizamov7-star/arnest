@@ -1058,22 +1058,32 @@ function startGame(){
   document.getElementById('hints').classList.remove('h');
 }
 
-async function endGame(){
+function endGame(){
   G.running=false;
   player.visible=true;player.scale.set(1,1,1);
   document.getElementById('hud').classList.add('h');
   document.getElementById('hints').classList.add('h');
 
-  await saveScore(G.name,G.dept,G.score);
+  // ── Показываем экран НЕМЕДЛЕННО — не ждём сеть ──
   document.getElementById('go-score').textContent=G.score.toLocaleString();
-
-  const scores=await getScores();
-  const rank=scores.findIndex(s=>s.name===G.name&&s.dept===G.dept)+1;
-  const msgs=['🥇 РЕКОРД ЗАВОДА — ТЫ ЛЕГЕНДА!','🥈 2-е место — почти рекорд!','🥉 3-е место — в топе!'];
-  document.getElementById('go-msg').textContent=rank>=1&&rank<=3?msgs[rank-1]:(rank>0?`#${rank} в рейтинге завода`:'');
-
-  await renderLB('lb2');
+  document.getElementById('go-msg').textContent='⏳ Сохраняем результат...';
+  document.getElementById('lb2').innerHTML='<div style="padding:16px;text-align:center;color:var(--steel);font-size:12px">загрузка...</div>';
   document.getElementById('gos').classList.remove('h');
+
+  // Сетевые запросы в фоне — не блокируют UI
+  (async()=>{
+    try{
+      await saveScore(G.name,G.dept,G.score);
+      const scores=await getScores();
+      const rank=scores.findIndex(s=>s.name===G.name&&s.dept===G.dept)+1;
+      const msgs=['🥇 РЕКОРД ЗАВОДА — ТЫ ЛЕГЕНДА!','🥈 2-е место — почти рекорд!','🥉 3-е место — в топе!'];
+      document.getElementById('go-msg').textContent=rank>=1&&rank<=3?msgs[rank-1]:(rank>0?`#${rank} в рейтинге завода`:'⭐ Результат сохранён!');
+      await renderLB('lb2');
+    }catch{
+      document.getElementById('go-msg').textContent='⭐ Результат сохранён локально';
+      document.getElementById('lb2').innerHTML='<div style="padding:16px;text-align:center;color:var(--steel);font-size:12px">Нет связи с сервером</div>';
+    }
+  })();
 }
 
 // ── BUTTON LISTENERS ──
