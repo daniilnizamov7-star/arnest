@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAN RUSH — АРНЕСТ Factory Challenge</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
+:root{--fire:#ff6b1a;--sparks:#ffcc00;--dark:#07090e;--panel:#111620;--steel:#7a8fa8;--arnest:#003ec8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;width:100vw;height:100vh}
+#gc{display:block;position:absolute;inset:0;width:100%;height:100%}
+
+/* HUD */
+#hud{position:absolute;top:0;left:0;right:0;padding:14px 22px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:10}
+.hb{background:rgba(7,9,14,.82);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:7px 14px;backdrop-filter:blur(10px)}
+.hl{font-size:9px;letter-spacing:2.5px;color:var(--steel);text-transform:uppercase}
+.hv{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--sparks);line-height:1;text-shadow:0 0 16px rgba(255,204,0,.4)}
+#pname-hud{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--fire);letter-spacing:1px}
+#lives{display:flex;gap:5px;margin-top:5px;justify-content:center}
+.li{width:16px;height:16px;background:var(--АРНЕСТ);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:.3s}
+.li.dead{background:#222;opacity:.3}
+
+/* COMBO */
+#combo{position:absolute;top:90px;left:50%;transform:translateX(-50%);font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--sparks);text-shadow:0 0 40px var(--sparks);opacity:0;pointer-events:none;z-index:20;transition:opacity .25s;white-space:nowrap}
+
+/* PROGRESS */
+#pbw{position:absolute;top:0;left:0;right:0;height:3px;z-index:15;background:rgba(255,255,255,.04)}
+#pbf{height:100%;background:linear-gradient(90deg,var(--fire),var(--sparks));width:0%;box-shadow:0 0 8px var(--fire);transition:width .4s}
+
+/* FLASH */
+#flash{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:0;transition:opacity .08s}
+
+/* HINTS */
+#hints{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:12px;pointer-events:none;z-index:10;flex-wrap:wrap;justify-content:center}
+.hp{background:rgba(7,9,14,.75);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--steel);backdrop-filter:blur(8px);white-space:nowrap}
+.hp kbd{background:#1a2030;border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:1px 5px;color:#fff;font-size:10px;font-family:monospace}
+
+/* SCREENS */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;background:radial-gradient(ellipse at 50% 38%,rgba(14,18,28,.97) 0%,rgba(7,9,14,.99) 100%)}
+.scr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+.scr.h{display:none}
+
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,11vw,106px);color:#fff;letter-spacing:8px;line-height:.9;text-align:center;position:relative}
+.logo span{color:var(--fire);text-shadow:0 0 55px var(--fire),0 0 100px rgba(255,107,26,.2)}
+
+.logo-sub{font-size:clamp(10px,1.6vw,13px);letter-spacing:6px;color:var(--steel);text-transform:uppercase;margin-top:8px;text-align:center}
+
+/* ─── ARNEST BADGE (redesigned) ─── */
+.arnest-brand{
+  display:flex;align-items:center;gap:0;
+  margin-top:14px;
+  position:relative;
+}
+.arnest-logo-wrap{
+  background:var(--arnest);
+  padding:7px 14px 7px 16px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%);
+  display:flex;align-items:center;gap:8px;
+}
+.arnest-logo-icon{
+  width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.arnest-logo-icon svg{width:100%;height:100%}
+.arnest-logo-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:3px;color:#fff;
+  white-space:nowrap;
+}
+.arnest-tagline{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-left:none;
+  padding:7px 16px 7px 20px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;letter-spacing:2.5px;
+  color:var(--steel);text-transform:uppercase;
+  white-space:nowrap;
+  border-radius:0 4px 4px 0;
+}
+
+.fg{display:flex;flex-direction:column;gap:5px;width:310px;margin-top:8px}
+.fg label{font-size:10px;letter-spacing:3px;color:var(--steel);text-transform:uppercase}
+.fg input,.fg select{background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:600;padding:11px 14px;outline:none;transition:.2s}
+.fg input:focus,.fg select:focus{border-color:var(--fire);box-shadow:0 0 0 2px rgba(255,107,26,.12)}
+.fg select option{background:#111620}
+.btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:13px 42px;border:none;border-radius:6px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,transparent 55%);pointer-events:none}
+.btn-p{background:linear-gradient(135deg,#ff6b1a,#d93a00);color:#fff;box-shadow:0 4px 28px rgba(255,107,26,.38)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,107,26,.55)}
+.btn-s{background:var(--panel);color:#8a9bb0;border:1px solid rgba(255,255,255,.1)}
+.btn-s:hover{border-color:var(--fire);color:var(--fire)}
+.btn:active{transform:scale(.97)}
+.brow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* LEADERBOARD */
+.lbp{width:330px;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-top:12px}
+.lbh{background:linear-gradient(135deg,#141c28,#0a1018);border-bottom:1px solid rgba(255,255,255,.07);padding:11px 18px;display:flex;align-items:center;gap:9px}
+.lbt{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--sparks)}
+.lbr{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(255,255,255,.04);transition:.2s}
+.lbr:hover{background:rgba(255,107,26,.05)}
+.lbri{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--steel)}
+.lbri.g{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.4)}.lbri.s{color:#c0c0c0}.lbri.b{color:#cd7f32}
+.lbn{font-size:14px;font-weight:600;color:#fff}.lbd{font-size:10px;color:var(--steel)}
+.lbs{font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--sparks)}
+#go-score{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,13vw,130px);color:var(--sparks);text-shadow:0 0 50px var(--sparks);line-height:1;margin:8px 0}
+#go-msg{font-size:15px;letter-spacing:2px;color:var(--fire);min-height:22px;text-align:center;margin-bottom:18px}
+</style>
+</head>
+<body>
+
+<div id="pbw"><div id="pbf"></div></div>
+<canvas id="gc"></canvas>
+<div id="flash"></div>
+
+<!-- HUD -->
+<div id="hud" class="h">
+  <div class="hb"><div class="hl">Очки</div><div class="hv" id="sc">0</div></div>
+  <div class="hb" style="text-align:center"><div id="pname-hud">—</div><div id="lives"></div></div>
+  <div class="hb" style="text-align:right"><div class="hl">Скорость</div><div class="hv" id="spd">1.0×</div></div>
+</div>
+<div id="combo"></div>
+
+<!-- HINTS -->
+<div id="hints" class="h">
+  <div class="hp"><kbd>←</kbd><kbd>→</kbd> полосы</div>
+  <div class="hp"><kbd>↑</kbd>/<kbd>Пробел</kbd> прыжок</div>
+  <div class="hp"><kbd>↓</kbd> слайд</div>
+  <div class="hp">📱 свайп</div>
+</div>
+
+<!-- ═══ START SCREEN ═══ -->
+<div class="scr" id="ss">
+  <div class="logo">CAN <span>RUSH</span></div>
+  <div class="logo-sub">Factory Worker Challenge</div>
+
+  <!-- ARNEST BRAND BADGE -->
+  <div class="arnest-brand">
+    <div class="arnest-logo-wrap">
+      <div class="arnest-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stylized can/gear icon -->
+          <rect x="7" y="3" width="10" height="18" rx="3" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.5"/>
+          <rect x="9" y="5" width="6" height="2" rx="1" fill="white" opacity="0.7"/>
+          <rect x="9" y="8" width="6" height="1" rx=".5" fill="white" opacity="0.4"/>
+          <rect x="9" y="10" width="6" height="1" rx=".5" fill="white" opacity="0.4"/>
+          <path d="M9 17.5 Q12 19 15 17.5" stroke="white" stroke-width="1.2" fill="none" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="arnest-logo-text">ARNEST</div>
+    </div>
+    <div class="arnest-tagline">Packaging Solutions</div>
+  </div>
+
+  <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div class="fg">
+      <label>Твоё имя</label>
+      <input id="ni" placeholder="Введи имя" maxlength="20" autocomplete="off"/>
+    </div>
+    <div class="fg">
+      <label>Смена / отдел</label>
+      <select id="di">
+        <option value="Смена 1">🌅 Смена 1</option>
+        <option value="Смена 2">☀️ Смена 2</option>
+        <option value="Смена 3">🌆 Смена 3</option>
+        <option value="Смена 4">🌙 Смена 4</option>
+        <option value="Смена 5">⭐ Смена 5</option>
+        <option value="СГП">📦 СГП</option>
+        <option value="Инженеринг">🔧 Инженеринг</option>
+        
+      </select>
+    </div>
+    <button class="btn btn-p" id="sb2" style="width:310px;margin-top:6px">🚀 НАЧАТЬ ГОНКУ</button>
+  </div>
+
+  <div class="lbp">
+    <div class="lbh">
+      <span style="font-size:17px">🏆</span>
+      <span class="lbt">Рекорды завода</span>
+      <span id="lbl" style="margin-left:auto;font-size:10px;color:var(--steel);letter-spacing:2px">загрузка...</span>
+    </div>
+    <div id="lb1"></div>
+  </div>
+</div>
+
+<!-- ═══ GAME OVER ═══ -->
+<div class="scr h" id="gos">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:6px;color:var(--steel)">КОНВЕЙЕР ОСТАНОВЛЕН</div>
+  <div id="go-score">0</div>
+  <div id="go-msg"></div>
+  <div class="brow">
+    <button class="btn btn-p" id="rb">🔄 ЕЩЁ РАЗ</button>
+    <button class="btn btn-s" id="mb">🏠 МЕНЮ</button>
+  </div>
+  <div class="lbp" style="margin-top:20px">
+    <div class="lbh"><span style="font-size:17px">🏆</span><span class="lbt">Топ завода</span></div>
+    <div id="lb2"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ═══════════════════════════════
+//  SUPABASE
+// ═══════════════════════════════
+const SB_URL='https://yiqipulgofoschkccaxr.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpcWlwdWxnb2Zvc2Noa2NjYXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMjExMjksImV4cCI6MjA4OTg5NzEyOX0.Op4iBjGSOBcKh4pkVSd75_l8Fle3Cz15nBh9KF21YhI';
+const SB_H={apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`};
+
+async function getScores(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/can_rush_scores?order=score.desc&limit=10`,{headers:SB_H});
+    return r.ok?await r.json():[];
+  }catch{return[];}
+}
+async function saveScore(name,dept,score){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/can_rush_scores?name=eq.${encodeURIComponent(name)}&dept=eq.${encodeURIComponent(dept)}&select=id,score`,{headers:SB_H});
+    const rows=r.ok?await r.json():[];
+    if(rows.length&&rows[0].score>=score)return;
+    const method=rows.length?'PATCH':'POST';
+    const url=rows.length?`${SB_URL}/rest/v1/can_rush_scores?id=eq.${rows[0].id}`:`${SB_URL}/rest/v1/can_rush_scores`;
+    await fetch(url,{method,headers:{...SB_H,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({name,dept,score})});
+  }catch{}
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+async function renderLB(id){
+  const scores=await getScores();
+  const el=document.getElementById(id);
+  const ld=document.getElementById('lbl');
+  if(ld)ld.textContent='';
+  if(!scores.length){
+    el.innerHTML=`<div style="padding:18px;text-align:center;color:var(--steel);font-size:12px;letter-spacing:1px">Первый рекорд будет твоим 🏆</div>`;
+    return;
+  }
+  const medals=['g','s','b'];
+  el.innerHTML=scores.map((s,i)=>`
+    <div class="lbr">
+      <div class="lbri ${medals[i]||''}">${i+1}</div>
+      <div><div class="lbn">${esc(s.name)}</div><div class="lbd">${esc(s.dept)}</div></div>
+      <div class="lbs">${s.score.toLocaleString()}</div>
+    </div>`).join('');
+}
+renderLB('lb1');
+
+// ═══════════════════════════════
+//  THREE.JS SETUP
+// ═══════════════════════════════
+const canvas=document.getElementById('gc');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+renderer.setClearColor(0x050710);
+
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x050710,0.021);
+
+const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,130);
+camera.position.set(0,3.8,8);
+camera.lookAt(0,1,0);
+
+// ── LIGHTS ──
+scene.add(new THREE.AmbientLight(0x202840,1.1));
+
+const sun=new THREE.DirectionalLight(0xfff4e0,1.5);
+sun.position.set(4,14,6);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-9;sun.shadow.camera.right=9;
+sun.shadow.camera.top=9;sun.shadow.camera.bottom=-2;
+sun.shadow.bias=-0.001;
+scene.add(sun);
+
+scene.add(new THREE.HemisphereLight(0x1030a0,0x281408,0.55));
+
+const fLights=[];
+for(let i=0;i<6;i++){
+  const l=new THREE.PointLight(0xff7020,0,11);
+  l.position.set(i%2?-3.5:3.5,3.5,-i*7-4);
+  scene.add(l);fLights.push(l);
+}
+const blueL=new THREE.PointLight(0x4080ff,0.8,22);
+blueL.position.set(0,6,-15);scene.add(blueL);
+
+// ═══════════════════════════════
+//  BELT TEXTURE
+// ═══════════════════════════════
+function mkBeltTex(){
+  const c=document.createElement('canvas');c.width=256;c.height=256;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#1a2232';ctx.fillRect(0,0,256,256);
+  ctx.strokeStyle='#222c40';ctx.lineWidth=9;
+  for(let y=0;y<256;y+=22){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(256,y);ctx.stroke();}
+  for(let i=0;i<2200;i++){
+    ctx.fillStyle=`rgba(${40+Math.random()*20},${55+Math.random()*20},${80+Math.random()*20},.35)`;
+    ctx.fillRect(Math.random()*256,Math.random()*256,2,1);
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.repeat.set(2,7);
+  return t;
+}
+const bTex=mkBeltTex();
+const beltMat=new THREE.MeshStandardMaterial({map:bTex,roughness:.72,metalness:.18});
+const edgeMat=new THREE.MeshStandardMaterial({color:0xff6b1a,emissive:0xff6b1a,emissiveIntensity:.75,roughness:.4});
+const divMat=new THREE.MeshStandardMaterial({color:0x2a3a55,emissive:0x1a2a45,emissiveIntensity:.45});
+
+// ═══════════════════════════════
+//  BELT TILES  (clean, no duplicates)
+// ═══════════════════════════════
+const BELT_W=6, LANE_W=2, TILE_L=5, N_TILES=16;
+
+function mkTile(z){
+  const g=new THREE.Group();
+  const bm=new THREE.Mesh(new THREE.BoxGeometry(BELT_W,.2,TILE_L),beltMat);
+  bm.position.y=-.1;bm.receiveShadow=true;g.add(bm);
+  [-BELT_W/2+.07, BELT_W/2-.07].forEach(x=>{
+    const e=new THREE.Mesh(new THREE.BoxGeometry(.1,.25,TILE_L),edgeMat);
+    e.position.set(x,.02,0);g.add(e);
+  });
+  [-LANE_W/2, LANE_W/2].forEach(x=>{
+    const d=new THREE.Mesh(new THREE.BoxGeometry(.05,.02,TILE_L),divMat);
+    d.position.set(x,.11,0);g.add(d);
+  });
+  g.position.z=z;
+  scene.add(g);
+  return g;
+}
+
+const beltTiles=[];
+for(let i=0;i<N_TILES;i++) beltTiles.push(mkTile(-i*TILE_L));
+
+// ═══════════════════════════════
+//  FACTORY ENVIRONMENT
+// ═══════════════════════════════
+const wallM=new THREE.MeshStandardMaterial({color:0x111820,roughness:.9,metalness:.1});
+[-5.5,5.5].forEach(x=>{
+  const w=new THREE.Mesh(new THREE.BoxGeometry(.5,8,200),wallM);
+  w.position.set(x,4,-90);w.receiveShadow=true;scene.add(w);
+});
+const floorMesh=new THREE.Mesh(new THREE.BoxGeometry(20,.1,200),new THREE.MeshStandardMaterial({color:0x0b0f18,roughness:.95}));
+floorMesh.position.set(0,-.2,-90);floorMesh.receiveShadow=true;scene.add(floorMesh);
+const ceilMesh=new THREE.Mesh(new THREE.BoxGeometry(14,.3,200),new THREE.MeshStandardMaterial({color:0x0c1218,roughness:.85}));
+ceilMesh.position.set(0,8,-90);scene.add(ceilMesh);
+
+const pipeM=new THREE.MeshStandardMaterial({color:0x3a4858,metalness:.7,roughness:.4});
+for(let i=0;i<30;i++){
+  const p=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,14,10),pipeM);
+  p.rotation.z=Math.PI/2;p.position.set(0,6.5,-i*5-3);scene.add(p);
+}
+for(let i=0;i<8;i++){
+  [-5,5].forEach(x=>{
+    const p=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,3,8),pipeM);
+    p.position.set(x,5.5,-i*10-3);scene.add(p);
+  });
+}
+
+// Hanging lamps
+const lmpM=new THREE.MeshStandardMaterial({color:0x1c2430,roughness:.6});
+const blbM=new THREE.MeshStandardMaterial({color:0xfffae0,emissive:0xfffae0,emissiveIntensity:1.8});
+for(let i=0;i<14;i++){
+  const grp=new THREE.Group();
+  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.45,.28,.35,10,1,true),lmpM);
+  shade.position.y=-.18;grp.add(shade);
+  const blb=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),blbM);
+  blb.position.y=-.32;grp.add(blb);
+  const cord=new THREE.Mesh(new THREE.CylinderGeometry(.01,.01,.55,4),lmpM);
+  cord.position.y=.1;grp.add(cord);
+  grp.position.set(0,7.7,-i*7.5-3);scene.add(grp);
+}
+// Distant machinery silhouettes
+const machM=new THREE.MeshStandardMaterial({color:0x0c1420,roughness:1});
+[[-7,2,-20],[-7,1.2,-42],[7,2.5,-28],[7,1.8,-55],[-7,1.5,-62],[7,2,-72]].forEach(([x,h,z])=>{
+  const m=new THREE.Mesh(new THREE.BoxGeometry(2,h*2,3.5),machM);
+  m.position.set(x,h,z);scene.add(m);
+});
+
+// ═══════════════════════════════
+//  REALISTIC 0.5L ALUMINUM CAN
+//  Shape from photo: tall+slim, tiny shoulder taper at top,
+//  nearly straight cylinder body, concave base dome
+// ═══════════════════════════════
+function makeCanTexture(){
+  // Canvas texture for the label wrap: АРНЕСТ + design
+  const W=512, H=512;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+
+  // Base: brushed aluminum silver
+  const bg=ctx.createLinearGradient(0,0,W,0);
+  bg.addColorStop(0,   '#a8b0bc');
+  bg.addColorStop(0.15,'#d8e0ec');
+  bg.addColorStop(0.35,'#eef2f8');
+  bg.addColorStop(0.5, '#f4f8ff');
+  bg.addColorStop(0.65,'#dce4f0');
+  bg.addColorStop(0.85,'#c0c8d8');
+  bg.addColorStop(1,   '#a8b0bc');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Subtle vertical brush lines
+  ctx.globalAlpha=0.08;
+  for(let x=0;x<W;x+=3){
+    ctx.fillStyle=Math.random()>.5?'#ffffff':'#808898';
+    ctx.fillRect(x,0,1,H);
+  }
+  ctx.globalAlpha=1;
+
+  // Red band (Arnest corporate red) - center of label
+  const bandY=H*0.28, bandH=H*0.44;
+  const red=ctx.createLinearGradient(0,bandY,0,bandY+bandH);
+  red.addColorStop(0,'#cc0020');
+  red.addColorStop(0.5,'#e8003d');
+  red.addColorStop(1,'#aa0018');
+  ctx.fillStyle=red; ctx.fillRect(0,bandY,W,bandH);
+
+  // Thin white lines bordering red band
+  ctx.fillStyle='#ffffff';
+  ctx.fillRect(0,bandY-3,W,4);
+  ctx.fillRect(0,bandY+bandH-1,W,4);
+
+  // АРНЕСТ text - bold, white, centered in red band
+  ctx.save();
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  // Outer shadow/glow
+  ctx.shadowColor='rgba(0,0,0,0.5)';
+  ctx.shadowBlur=8;
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 88px Arial Black, Arial, sans-serif';
+  ctx.letterSpacing='12px';
+  ctx.fillText('АРНЕСТ', W/2+4, bandY+bandH/2+2);
+  ctx.shadowBlur=0;
+  ctx.fillStyle='#ffffff';
+  ctx.fillText('АРНЕСТ', W/2, bandY+bandH/2);
+  ctx.restore();
+
+  // Small tagline below
+  ctx.fillStyle='rgba(255,255,255,0.7)';
+  ctx.font='bold 20px Arial, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('PACKAGING SOLUTIONS', W/2, bandY+bandH+20);
+
+  // Barcode-style decoration at bottom
+  ctx.globalAlpha=0.15;
+  for(let x=20;x<W-20;x+=4){
+    ctx.fillStyle='#000';
+    ctx.fillRect(x,H*0.82,Math.random()>0.5?2:1,H*0.08);
+  }
+  ctx.globalAlpha=1;
+
+  const t=new THREE.CanvasTexture(c);
+  return t;
+}
+
+function makeCan(){
+  const g=new THREE.Group();
+
+  // Real 0.5L can proportions from photo:
+  // Very slight taper — mostly straight cylinder
+  // R_body=0.38, R_top=0.30, H=1.80 (tall & slim)
+  const R=0.38, H=1.80, TOP_R=0.30, NECK=0.22, SEG=48;
+
+  // Profile: tall+slim, minimal shoulder, concave base curl
+  const profile=[
+    // Bottom: inward curl then flare
+    [R*0.60, -H/2+0.00],
+    [R*0.82, -H/2+0.03],
+    [R*0.96, -H/2+0.08],
+    [R,      -H/2+0.14],
+    // Long straight body
+    [R,      -H/2+0.18],
+    [R,       H/2-NECK-0.02],
+    // Shoulder — gentle taper (photo shows very little taper)
+    [R,       H/2-NECK],
+    [R*0.95,  H/2-NECK+0.05],
+    [R*0.88,  H/2-NECK+0.10],
+    [R*0.76,  H/2-NECK+0.15],
+    [TOP_R+0.02, H/2-0.06],
+    [TOP_R,   H/2-0.01],
+    // Top rim
+    [TOP_R,   H/2],
+    [TOP_R-0.02, H/2+0.005],
+  ].map(([r,y])=>new THREE.Vector2(r,y));
+
+  // ── Body with label texture ──
+  const labelTex=makeCanTexture();
+  // Aluminum material for top/bottom (no texture)
+  const alMat=new THREE.MeshStandardMaterial({
+    color:0xd8e0ec, metalness:0.97, roughness:0.05,
+  });
+  // Label material (textured)
+  const labelMat=new THREE.MeshStandardMaterial({
+    map:labelTex, metalness:0.7, roughness:0.2,
+  });
+
+  // Lathe body — aluminum
+  const body=new THREE.Mesh(new THREE.LatheGeometry(profile,SEG),alMat);
+  body.castShadow=true; g.add(body);
+
+  // Label cylinder overlay — covers the main body area only
+  // from y = -H/2+0.18 to y = H/2-NECK (the straight section)
+  const lblH=H-NECK-0.22;
+  const lblY=(-H/2+0.18 + H/2-NECK)/2; // center between top and bottom of label
+  const lblMesh=new THREE.Mesh(
+    new THREE.CylinderGeometry(R+0.001, R+0.001, lblH, SEG),
+    labelMat
+  );
+  lblMesh.position.y=lblY;
+  g.add(lblMesh);
+
+  // ── Bottom dome (concave) ──
+  const botM=new THREE.MeshStandardMaterial({color:0xb0b8c8,metalness:0.96,roughness:0.07});
+  const botRing=new THREE.Mesh(new THREE.TorusGeometry(R*0.70,0.038,7,SEG),botM);
+  botRing.rotation.x=Math.PI/2; botRing.position.y=-H/2+0.042; g.add(botRing);
+  const botDisk=new THREE.Mesh(new THREE.CircleGeometry(R*0.66,SEG),botM);
+  botDisk.rotation.x=-Math.PI/2; botDisk.position.y=-H/2+0.006; g.add(botDisk);
+  // Concave dome rings
+  [0.44,0.28].forEach((r,idx)=>{
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(R*r,0.018,5,SEG),
+      new THREE.MeshStandardMaterial({color:0x98a0b0,metalness:0.95,roughness:0.1}));
+    ring.rotation.x=Math.PI/2; ring.position.y=-H/2+0.025+idx*0.008; g.add(ring);
+  });
+
+  // ── Top lid ──
+  const lidM=new THREE.MeshStandardMaterial({color:0xc0c8d8,metalness:0.97,roughness:0.06});
+  const topDisk=new THREE.Mesh(new THREE.CircleGeometry(TOP_R-0.01,SEG),lidM);
+  topDisk.rotation.x=Math.PI/2; topDisk.position.y=H/2-0.007; g.add(topDisk);
+  // Rim ring
+  const rimRing=new THREE.Mesh(new THREE.TorusGeometry(TOP_R,0.020,7,SEG),alMat);
+  rimRing.rotation.x=Math.PI/2; rimRing.position.y=H/2; g.add(rimRing);
+  // Score line (partial circle — the opening)
+  const scLine=new THREE.Mesh(
+    new THREE.TorusGeometry(TOP_R*0.62,0.011,4,Math.round(SEG*0.6),Math.PI*1.6),
+    new THREE.MeshStandardMaterial({color:0x7888a0,metalness:0.9,roughness:0.2})
+  );
+  scLine.rotation.x=Math.PI/2; scLine.position.y=H/2-0.002; g.add(scLine);
+
+  // ── Pull tab ──
+  const tabM=new THREE.MeshStandardMaterial({color:0x8898a8,metalness:0.9,roughness:0.20});
+  const tabRing=new THREE.Mesh(new THREE.TorusGeometry(0.058,0.016,6,14),tabM);
+  tabRing.position.set(0.08,H/2+0.014,0); tabRing.rotation.x=Math.PI*0.3; g.add(tabRing);
+  const armCurve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0,0,0),new THREE.Vector3(0.05,0.007,0),
+    new THREE.Vector3(0.13,-0.007,0),new THREE.Vector3(0.17,-0.010,0)
+  ]);
+  const arm=new THREE.Mesh(new THREE.TubeGeometry(armCurve,8,0.010,5,false),tabM);
+  arm.position.set(-0.018,H/2+0.022,0); g.add(arm);
+  const rivet=new THREE.Mesh(new THREE.SphereGeometry(0.018,7,5),tabM);
+  rivet.position.set(0.032,H/2+0.028,0); g.add(rivet);
+
+  // ── Specular highlight strip ──
+  const hlMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.10,depthWrite:false});
+  g.add(new THREE.Mesh(
+    new THREE.CylinderGeometry(R+0.003,R+0.003,lblH*0.9,SEG,1,true,Math.PI*0.27,Math.PI*0.08),
+    hlMat
+  ));
+
+  return g;
+}
+
+// Can center: bottom at y=0, center at H/2=0.90
+const player=makeCan();
+player.position.set(0,0.90,4);
+scene.add(player);
+
+// Hitbox constants (tight, less than visual)
+const HIT_R=0.33;
+
+// ═══════════════════════════════
+//  SPARK PARTICLES
+// ═══════════════════════════════
+const SP_MAX=130;
+const spGeo=new THREE.BufferGeometry();
+const spPos=new Float32Array(SP_MAX*3);
+const spVel=Array.from({length:SP_MAX},()=>({x:0,y:0,z:0,l:0}));
+for(let i=0;i<SP_MAX;i++) spPos[i*3+1]=-200;
+spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
+const spMat=new THREE.PointsMaterial({color:0xffcc00,size:.13,transparent:true,opacity:.9,sizeAttenuation:true});
+scene.add(new THREE.Points(spGeo,spMat));
+let spActive=0;
+
+function burstSparks(x,y,z,n){
+  for(let i=0;i<(n||20)&&spActive<SP_MAX;i++){
+    const idx=spActive++;
+    spPos[idx*3]=x;spPos[idx*3+1]=y;spPos[idx*3+2]=z;
+    spVel[idx]={x:(Math.random()-.5)*.2,y:Math.random()*.32+.07,z:(Math.random()-.5)*.14,l:1};
+  }
+}
+function tickSparks(dt){
+  for(let i=0;i<spActive;){
+    const v=spVel[i];v.l-=dt*3.2;
+    if(v.l<=0){
+      const last=spActive-1;
+      spPos[i*3]=spPos[last*3];spPos[i*3+1]=spPos[last*3+1];spPos[i*3+2]=spPos[last*3+2];
+      spVel[i]=spVel[last];spPos[last*3+1]=-200;spActive--;
+    }else{
+      v.y-=dt*.45;
+      spPos[i*3]+=v.x*dt*60;spPos[i*3+1]+=v.y*dt*60;spPos[i*3+2]+=v.z*dt*60;
+      i++;
+    }
+  }
+  spGeo.attributes.position.needsUpdate=true;
+}
+
+// ═══════════════════════════════
+//  OBSTACLES
+// ═══════════════════════════════
+/*
+  0: cardboard box (single lane, dodge)
+  1: red barrier   (full belt, must JUMP)   — top at y=0.55
+  2: hanging pipe  (full belt, must SLIDE)  — bottom at y=1.36 (center 1.5)
+  3: tall crate    (single lane, dodge)
+*/
+const OBS_DEF=[
+  {name:'box',    full:false, w:1.3, h:1.0,  d:.9,  col:0x7a5c30,emi:0x3c2c10},
+  {name:'barrier',full:true,  w:5.8, h:0.55, d:.35, col:0xbb2200,emi:0x771100, cy:.275},
+  {name:'pipe',   full:true,  w:5.8, h:0.28, d:.28, col:0x445566,emi:0x223344, cy:1.5},
+  {name:'crate',  full:false, w:1.1, h:1.4,  d:1.0, col:0x3a4858,emi:0x1a2030},
+];
+const obsPool=[];
+
+function spawnObs(){
+  const ti=Math.floor(Math.random()*OBS_DEF.length);
+  const def=OBS_DEF[ti];
+  const grp=new THREE.Group();
+
+  const mat=new THREE.MeshStandardMaterial({
+    color:def.col,emissive:def.emi,emissiveIntensity:.18,
+    roughness:.68,metalness:ti===2?.65:.2
+  });
+  const mesh=new THREE.Mesh(new THREE.BoxGeometry(def.w,def.h,def.d),mat);
+  mesh.castShadow=true;mesh.receiveShadow=true;
+
+  let posX=0, lane=1;
+  const cy=def.cy!==undefined?def.cy:def.h/2;
+
+  if(!def.full){
+    lane=Math.floor(Math.random()*3);
+    posX=(lane-1)*LANE_W;
+  }
+  mesh.position.set(posX,cy,0);
+  grp.add(mesh);
+
+  // Hazard stripes on full-lane obstacles
+  if(def.full){
+    const sM=new THREE.MeshStandardMaterial({color:0xffcc00,emissive:0xffcc00,emissiveIntensity:1.1});
+    for(let k=0;k<5;k++){
+      const s=new THREE.Mesh(new THREE.BoxGeometry(1.1,.04,def.d+.01), k%2===0?sM:mat.clone());
+      s.position.set(-2.2+k*1.1,cy+def.h/2+.02,0);
+      grp.add(s);
+    }
+  }
+
+  grp.position.z=-48;
+  grp.userData={type:ti,def,active:true,posX,cy,lane,full:def.full};
+  scene.add(grp);
+  obsPool.push(grp);
+}
+
+// ═══════════════════════════════
+//  COLLECTIBLES — PAINT BUCKETS
+// ═══════════════════════════════
+const collectPool=[];
+
+// Paint bucket colours with emissive glow
+const BUCKET_COLORS=[
+  {paint:0xe8003d, metal:0xcc1030, name:'red'},    // Arnest red
+  {paint:0x1a6fff, metal:0x1550cc, name:'blue'},
+  {paint:0xffcc00, metal:0xddaa00, name:'yellow'},
+  {paint:0x22cc55, metal:0x189940, name:'green'},
+  {paint:0xffffff, metal:0xcccccc, name:'white'},
+];
+
+function makeBucket(colorDef){
+  const g=new THREE.Group();
+  const SEG=20;
+
+  // Metal body of bucket (slightly tapered — wider at top like a real bucket)
+  const bodyM=new THREE.MeshStandardMaterial({
+    color:colorDef.metal, metalness:0.85, roughness:0.25,
+    emissive:colorDef.metal, emissiveIntensity:0.08
+  });
+  // Bucket shape: CylinderGeometry(radiusTop, radiusBottom, height, segments)
+  const body=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.18,0.38,SEG),bodyM);
+  body.position.y=0.19; g.add(body);
+
+  // Bottom disk
+  const botM=new THREE.MeshStandardMaterial({color:colorDef.metal,metalness:0.9,roughness:0.2});
+  const bot=new THREE.Mesh(new THREE.CircleGeometry(0.18,SEG),botM);
+  bot.rotation.x=-Math.PI/2; bot.position.y=0.002; g.add(bot);
+
+  // Horizontal ribs (2 metal bands around body)
+  const ribM=new THREE.MeshStandardMaterial({color:0x888890,metalness:0.95,roughness:0.15});
+  [0.10, 0.24].forEach(y=>{
+    const rib=new THREE.Mesh(new THREE.TorusGeometry(0.195+y*0.08,0.012,5,SEG),ribM);
+    rib.rotation.x=Math.PI/2; rib.position.y=y+0.06; g.add(rib);
+  });
+
+  // Top rim ring
+  const rimM=new THREE.MeshStandardMaterial({color:0xaaaaaa,metalness:0.95,roughness:0.12});
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(0.222,0.014,6,SEG),rimM);
+  rim.rotation.x=Math.PI/2; rim.position.y=0.375; g.add(rim);
+
+  // Paint surface (slightly inside top opening, coloured liquid look)
+  const paintM=new THREE.MeshStandardMaterial({
+    color:colorDef.paint, metalness:0.05, roughness:0.05,
+    emissive:colorDef.paint, emissiveIntensity:0.25
+  });
+  const paintSurf=new THREE.Mesh(new THREE.CircleGeometry(0.205,SEG),paintM);
+  paintSurf.rotation.x=Math.PI/2; paintSurf.position.y=0.365; g.add(paintSurf);
+
+  // Paint drip streak on the side (thin colored strip)
+  const dripM=new THREE.MeshStandardMaterial({
+    color:colorDef.paint, metalness:0.0, roughness:0.4,
+    emissive:colorDef.paint, emissiveIntensity:0.2
+  });
+  const drip=new THREE.Mesh(new THREE.BoxGeometry(0.025,0.14,0.022),dripM);
+  drip.position.set(0.19,0.22,0.04); drip.rotation.z=-0.08; g.add(drip);
+
+  // Handle (wire arc over top)
+  const handleM=new THREE.MeshStandardMaterial({color:0x888888,metalness:0.9,roughness:0.2});
+  const handleCurve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-0.20,0.38,0),
+    new THREE.Vector3(-0.12,0.62,0),
+    new THREE.Vector3(0,0.70,0),
+    new THREE.Vector3(0.12,0.62,0),
+    new THREE.Vector3(0.20,0.38,0),
+  ]);
+  const handle=new THREE.Mesh(new THREE.TubeGeometry(handleCurve,12,0.012,6,false),handleM);
+  g.add(handle);
+
+  // Glow point light inside bucket (subtle colour spill)
+  const glow=new THREE.PointLight(colorDef.paint,0.6,1.2);
+  glow.position.y=0.5; g.add(glow);
+
+  return g;
+}
+
+function spawnCollect(){
+  const lane=Math.floor(Math.random()*3);
+  const inAir=Math.random()<0.25;
+  const baseY=inAir?2.0:0.01; // sit on belt or float
+  const colorDef=BUCKET_COLORS[Math.floor(Math.random()*BUCKET_COLORS.length)];
+  const grp=makeBucket(colorDef);
+  grp.position.set((lane-1)*LANE_W, baseY, -48);
+  grp.userData={active:true,lane,bobOff:Math.random()*Math.PI*2,baseY,colorDef};
+  // random slight Y rotation so they face different ways
+  grp.rotation.y=Math.random()*Math.PI*2;
+  scene.add(grp); collectPool.push(grp);
+}
+
+// ═══════════════════════════════
+//  GAME STATE
+// ═══════════════════════════════
+const LANES_X=[-2,0,2];
+const GRAV=-25, JUMP_V=10.5, SLIDE_DUR=.55;
+
+let G={
+  running:false, lane:1, targetX:0, y:0.90, vy:0,
+  jumping:false, sliding:false, slideT:0,
+  lives:3, score:0, speed:6.5, dist:0,
+  combo:0, comboT:0, inv:0,
+  spawnT:0, cspawnT:0,
+  shake:0, tiltZ:0, lt:0,
+  name:'', dept:''
+};
+
+function resetG(){
+  G.lane=1;G.targetX=0;G.y=0.90;G.vy=0;
+  G.jumping=false;G.sliding=false;G.slideT=0;
+  G.lives=3;G.score=0;G.speed=6.5;G.dist=0;
+  G.combo=0;G.comboT=0;G.inv=0;
+  G.spawnT=0;G.cspawnT=0;G.shake=0;G.tiltZ=0;
+}
+
+// ═══════════════════════════════
+//  COLLISION (tight & accurate)
+// ═══════════════════════════════
+function checkCollisions(){
+  const px=player.position.x, py=player.position.y, pz=player.position.z;
+  // Player: cylinder center at py, radius HIT_R, height ~1.5
+  // World bottom ≈ py-0.75, top ≈ py+0.75
+  const pBot=py-0.90, pTop=py+0.90;
+
+  for(let i=obsPool.length-1;i>=0;i--){
+    const o=obsPool[i];
+    if(!o.userData.active) continue;
+
+    const {def,posX,cy,full}=o.userData;
+    const oz=o.position.z;
+
+    // Z overlap
+    if(Math.abs(pz-oz) > def.d/2+.28) continue;
+
+    // X overlap
+    const dx=Math.abs(px-posX);
+    const hitHalfW=full ? (BELT_W/2-.05) : (def.w/2-.1);
+    if(dx > HIT_R+hitHalfW-.18) continue;
+
+    // Y overlap
+    const oBot=cy-def.h/2, oTop=cy+def.h/2;
+    if(pTop < oBot+.06 || pBot > oTop-.06) continue;
+
+    // Barrier (type 1): player clears it if jumped over (pBot above oTop)
+    if(o.userData.type===1 && pBot>oTop-.12) continue;
+
+    // Hanging pipe (type 2): player clears it if sliding (head low enough)
+    if(o.userData.type===2 && G.sliding) continue;
+
+    // HIT
+    takeDamage();
+    o.userData.active=false;
+    o.traverse(c=>{
+      if(c.isMesh&&c.material){
+        const m=c.material.clone();m.opacity=.22;m.transparent=true;c.material=m;
+      }
+    });
+  }
+}
+
+function checkCoins(){
+  const px=player.position.x, py=player.position.y, pz=player.position.z;
+  for(let i=collectPool.length-1;i>=0;i--){
+    const c=collectPool[i];
+    if(!c.userData.active) continue;
+    if(Math.abs(px-c.position.x)<.68 && Math.abs(pz-c.position.z)<.72 && Math.abs(py-c.position.y)<.92){
+      c.userData.active=false;scene.remove(c);collectPool.splice(i,1);
+      G.combo++;G.comboT=2.5;G.score+=10*G.combo;
+      burstSparks(c.position.x,c.position.y,c.position.z,20);
+      doFlash('gold');
+      if(G.combo>=3) showCombo();
+    }
+  }
+}
+
+function takeDamage(){
+  if(G.inv>0) return;
+  G.lives--;G.combo=0;G.inv=2.3;G.shake=.5;
+  burstSparks(player.position.x,player.position.y,player.position.z,35);
+  doFlash('red');renderLives();
+  if(G.lives<=0) endGame();
+}
+
+function doFlash(t){
+  const f=document.getElementById('flash');
+  f.style.background=t==='red'?'rgba(255,0,50,.3)':'rgba(255,204,0,.18)';
+  f.style.opacity='1';
+  setTimeout(()=>f.style.opacity='0',100);
+}
+function showCombo(){
+  const el=document.getElementById('combo');
+  el.textContent=`×${G.combo} COMBO!`;el.style.opacity='1';
+  clearTimeout(el._t);el._t=setTimeout(()=>el.style.opacity='0',900);
+}
+
+// ═══════════════════════════════
+//  INPUT
+// ═══════════════════════════════
+const keys={};
+window.addEventListener('keydown',e=>{
+  if(!G.running||keys[e.code]) return;
+  keys[e.code]=true;
+  if(e.code==='ArrowLeft'||e.code==='KeyA')  moveLane(-1);
+  if(e.code==='ArrowRight'||e.code==='KeyD') moveLane(1);
+  if(e.code==='ArrowUp'||e.code==='Space'||e.code==='KeyW'){doJump();e.preventDefault();}
+  if(e.code==='ArrowDown'||e.code==='KeyS')  doSlide();
+});
+window.addEventListener('keyup',e=>{keys[e.code]=false;});
+
+let tx=0,ty=0;
+canvas.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  if(!G.running) return;
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>18||Math.abs(dy)>18){
+    Math.abs(dx)>Math.abs(dy) ? (dx<0?moveLane(-1):moveLane(1)) : (dy<0?doJump():doSlide());
+  }
+},{passive:true});
+
+function moveLane(d){
+  const nl=Math.max(0,Math.min(2,G.lane+d));
+  if(nl===G.lane) return;
+  G.lane=nl;G.targetX=LANES_X[G.lane];G.tiltZ=d<0?.2:-.2;
+}
+function doJump(){
+  if(!G.jumping&&!G.sliding){
+    G.jumping=true;G.vy=JUMP_V;
+    burstSparks(player.position.x,.3,player.position.z,12);
+  }
+}
+function doSlide(){
+  if(!G.sliding&&!G.jumping){G.sliding=true;G.slideT=SLIDE_DUR;}
+}
+
+// ═══════════════════════════════
+//  UPDATE FUNCTIONS
+// ═══════════════════════════════
+function updPlayer(dt){
+  player.position.x+=(G.targetX-player.position.x)*Math.min(dt*14,1);
+  G.tiltZ*=.87;player.rotation.z=G.tiltZ;
+
+  if(G.jumping){
+    G.vy+=GRAV*dt;G.y+=G.vy*dt;
+    if(G.y<=0.90){G.y=0.90;G.vy=0;G.jumping=false;}
+  }
+  if(G.sliding){
+    G.slideT-=dt;
+    player.scale.set(1,.5,1);player.position.y=0.46;
+    if(G.slideT<=0){G.sliding=false;player.scale.set(1,1,1);}
+  } else {
+    player.position.y=G.y;
+  }
+  if(!G.jumping&&!G.sliding){
+    player.rotation.x=Math.sin(Date.now()*.0025)*.022;
+    player.rotation.y+=dt*.7;
+  }
+  if(G.inv>0){G.inv-=dt;player.visible=Math.floor(G.inv*10)%2===0;}
+  else player.visible=true;
+}
+
+function updBelt(dt){
+  const move=G.speed*dt;
+  const WRAP_FRONT=TILE_L*1.5;
+  const PUSH_BACK=N_TILES*TILE_L;
+  beltTiles.forEach(tile=>{
+    tile.position.z+=move;
+    if(tile.position.z>WRAP_FRONT) tile.position.z-=PUSH_BACK;
+  });
+  bTex.offset.y=(bTex.offset.y-move*.055)%1;
+  bTex.needsUpdate=true;
+}
+
+function updObs(dt){
+  for(let i=obsPool.length-1;i>=0;i--){
+    obsPool[i].position.z+=G.speed*dt;
+    if(obsPool[i].position.z>10){scene.remove(obsPool[i]);obsPool.splice(i,1);}
+  }
+}
+function updCoins(dt){
+  const t=Date.now()*.001;
+  for(let i=collectPool.length-1;i>=0;i--){
+    const c=collectPool[i];
+    c.position.z+=G.speed*dt;
+    // Buckets: gentle upright rock, no spin — they sit on the belt
+    if(c.userData.active){
+      if(c.userData.baseY>0.5){
+        // floating bucket bobs up/down
+        c.position.y=c.userData.baseY+Math.sin(t*2.5+c.userData.bobOff)*.09;
+      }
+      // very slight wobble tilt
+      c.rotation.z=Math.sin(t*2+c.userData.bobOff)*.04;
+    }
+    if(c.position.z>10){scene.remove(c);collectPool.splice(i,1);G.combo=0;}
+  }
+}
+function updCam(dt){
+  if(G.shake>0){
+    G.shake-=dt;
+    camera.position.x=(Math.random()-.5)*G.shake*.5;
+    camera.position.y=3.8+(Math.random()-.5)*G.shake*.35;
+  } else {
+    camera.position.x+=(0-camera.position.x)*dt*6;
+    camera.position.y+=(3.8-camera.position.y)*dt*6;
+  }
+}
+function updLights(dt){
+  const t=Date.now()*.001;
+  fLights.forEach((l,i)=>{
+    l.intensity=.38+Math.sin(t*1.9+i*1.3)*.26;
+    l.position.z+=G.speed*dt;
+    if(l.position.z>8) l.position.z-=52;
+  });
+}
+function updScore(dt){
+  G.dist+=G.speed*dt;
+  G.score+=Math.floor(G.speed*dt*2);
+  G.speed=Math.min(6.5+G.dist/180,23);
+  if(G.comboT>0) G.comboT-=dt;
+}
+function updHUD(){
+  document.getElementById('sc').textContent=G.score.toLocaleString();
+  document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
+  document.getElementById('pbf').style.width=(Math.min((G.dist/600)%1,1)*100)+'%';
+}
+function renderLives(){
+  const el=document.getElementById('lives');el.innerHTML='';
+  for(let i=0;i<3;i++){
+    const d=document.createElement('div');
+    d.className='li'+(i>=G.lives?' dead':'');
+    el.appendChild(d);
+  }
+}
+
+// ═══════════════════════════════
+//  MAIN LOOP
+// ═══════════════════════════════
+function loop(ts){
+  requestAnimationFrame(loop);
+  const dt=Math.min((ts-(G.lt||ts))/1000,.05);G.lt=ts;
+
+  if(G.running){
+    updBelt(dt);updPlayer(dt);updScore(dt);
+    updCam(dt);updLights(dt);tickSparks(dt);
+
+    G.spawnT-=dt;
+    if(G.spawnT<=0){spawnObs();G.spawnT=Math.max(.6,2.7-G.dist/340);}
+    G.cspawnT-=dt;
+    if(G.cspawnT<=0){spawnCollect();G.cspawnT=1.1;}
+
+    updObs(dt);updCoins(dt);
+    checkCollisions();checkCoins();
+    updHUD();
+  }
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(loop);
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+
+// ═══════════════════════════════
+//  GAME FLOW
+// ═══════════════════════════════
+function startGame(){
+  const name=document.getElementById('ni').value.trim()||'Аноним';
+  const dept=document.getElementById('di').value;
+  G.name=name;G.dept=dept;
+  document.getElementById('pname-hud').textContent=name;
+
+  // Clear old obstacles & collectibles
+  obsPool.slice().forEach(o=>scene.remove(o));
+  obsPool.length=0;
+  collectPool.slice().forEach(c=>scene.remove(c));
+  collectPool.length=0;
+
+  // Reset player transform
+  player.position.set(0,0.90,4);
+  player.rotation.set(0,0,0);
+  player.scale.set(1,1,1);
+  player.visible=true;
+
+  resetG();
+  G.running=true;
+  renderLives();
+
+  document.getElementById('ss').classList.add('h');
+  document.getElementById('gos').classList.add('h');
+  document.getElementById('hud').classList.remove('h');
+  document.getElementById('hints').classList.remove('h');
+}
+
+async function endGame(){
+  G.running=false;
+  player.visible=true;player.scale.set(1,1,1);
+  document.getElementById('hud').classList.add('h');
+  document.getElementById('hints').classList.add('h');
+
+  await saveScore(G.name,G.dept,G.score);
+  document.getElementById('go-score').textContent=G.score.toLocaleString();
+
+  const scores=await getScores();
+  const rank=scores.findIndex(s=>s.name===G.name&&s.dept===G.dept)+1;
+  const msgs=['🥇 РЕКОРД ЗАВОДА — ТЫ ЛЕГЕНДА!','🥈 2-е место — почти рекорд!','🥉 3-е место — в топе!'];
+  document.getElementById('go-msg').textContent=rank>=1&&rank<=3?msgs[rank-1]:(rank>0?`#${rank} в рейтинге завода`:'');
+
+  await renderLB('lb2');
+  document.getElementById('gos').classList.remove('h');
+}
+
+// ── BUTTON LISTENERS ──
+document.getElementById('sb2').addEventListener('click',startGame);
+document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});
+document.getElementById('rb').addEventListener('click',()=>{document.getElementById('gos').classList.add('h');startGame();});
+document.getElementById('mb').addEventListener('click',()=>{
+  document.getElementById('gos').classList.add('h');
+  document.getElementById('ss').classList.remove('h');
+  renderLB('lb1');
+});
+</script>
+</body>
+</html>
