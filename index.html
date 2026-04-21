@@ -169,9 +169,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
         <option value="Смена 5">⭐ Смена 5</option>
         <option value="СГП">📦 СГП</option>
         <option value="Инженеринг">🔧 Инженеринг</option>
-        <option value="ОТК">🔬 ОТК</option>
-        <option value="ИТ">💻 ИТ</option>
-        <option value="Администрация">📋 Администрация</option>
+        <option value="HR">👥 HR</option>
       </select>
     </div>
     <button class="btn btn-p" id="sb2" style="width:310px;margin-top:6px">🚀 НАЧАТЬ ГОНКУ</button>
@@ -389,71 +387,69 @@ const machM=new THREE.MeshStandardMaterial({color:0x0c1420,roughness:1});
 //  nearly straight cylinder body, concave base dome
 // ═══════════════════════════════
 function makeCanTexture(){
-  // Canvas texture for the label wrap: АРНЕСТ + design
-  const TW=isMobile?128:256, TH=isMobile?128:256;
-  const W=TW, H=TH;
+  // Always 512px — created once at init, not per-frame
+  const W=512, H=512;
   const c=document.createElement('canvas'); c.width=W; c.height=H;
   const ctx=c.getContext('2d');
 
-  // Base: brushed aluminum silver
+  // Base: brushed aluminum silver gradient
   const bg=ctx.createLinearGradient(0,0,W,0);
   bg.addColorStop(0,   '#a8b0bc');
   bg.addColorStop(0.15,'#d8e0ec');
-  bg.addColorStop(0.35,'#eef2f8');
-  bg.addColorStop(0.5, '#f4f8ff');
-  bg.addColorStop(0.65,'#dce4f0');
+  bg.addColorStop(0.38,'#eef2f8');
+  bg.addColorStop(0.5, '#f6faff');
+  bg.addColorStop(0.62,'#dce4f0');
   bg.addColorStop(0.85,'#c0c8d8');
   bg.addColorStop(1,   '#a8b0bc');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
-  // Subtle vertical brush lines
-  ctx.globalAlpha=0.08;
-  for(let x=0;x<W;x+=3){
+  // Brushed metal lines
+  ctx.globalAlpha=0.06;
+  for(let x=0;x<W;x+=4){
     ctx.fillStyle=Math.random()>.5?'#ffffff':'#808898';
     ctx.fillRect(x,0,1,H);
   }
   ctx.globalAlpha=1;
 
-  // Red band (Arnest corporate red) - center of label
-  const bandY=H*0.28, bandH=H*0.44;
+  // Red band
+  const bandY=H*0.26, bandH=H*0.46;
   const red=ctx.createLinearGradient(0,bandY,0,bandY+bandH);
   red.addColorStop(0,'#cc0020');
-  red.addColorStop(0.5,'#e8003d');
+  red.addColorStop(0.4,'#e8003d');
   red.addColorStop(1,'#aa0018');
   ctx.fillStyle=red; ctx.fillRect(0,bandY,W,bandH);
 
-  // Thin white lines bordering red band
+  // White border lines
   ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,bandY-3,W,4);
-  ctx.fillRect(0,bandY+bandH-1,W,4);
+  ctx.fillRect(0,bandY-3,W,5);
+  ctx.fillRect(0,bandY+bandH-2,W,5);
 
-  // АРНЕСТ text - bold, white, centered in red band
+  // АРНЕСТ — font scaled to canvas (no hardcoded px)
+  const fontSize=Math.round(W*0.175); // 17.5% of width = always fits
   ctx.save();
   ctx.textAlign='center';
   ctx.textBaseline='middle';
-  // Outer shadow/glow
-  ctx.shadowColor='rgba(0,0,0,0.5)';
-  ctx.shadowBlur=8;
+  ctx.shadowColor='rgba(0,0,0,0.6)';
+  ctx.shadowBlur=Math.round(W*0.018);
   ctx.fillStyle='#ffffff';
-  ctx.font='bold 88px Arial Black, Arial, sans-serif';
-  ctx.letterSpacing='12px';
-  ctx.fillText('АРНЕСТ', W/2+4, bandY+bandH/2+2);
+  ctx.font=`bold ${fontSize}px Arial Black, Arial, sans-serif`;
+  // Draw twice: shadow offset + main
+  ctx.fillText('АРНЕСТ', W/2+2, bandY+bandH/2+2);
   ctx.shadowBlur=0;
-  ctx.fillStyle='#ffffff';
   ctx.fillText('АРНЕСТ', W/2, bandY+bandH/2);
   ctx.restore();
 
-  // Small tagline below
-  ctx.fillStyle='rgba(255,255,255,0.7)';
-  ctx.font='bold 20px Arial, sans-serif';
+  // Tagline
+  ctx.fillStyle='rgba(255,255,255,0.75)';
+  ctx.font=`bold ${Math.round(W*0.042)}px Arial, sans-serif`;
   ctx.textAlign='center';
-  ctx.fillText('PACKAGING SOLUTIONS', W/2, bandY+bandH+20);
+  ctx.fillText('PACKAGING SOLUTIONS', W/2, bandY+bandH+Math.round(H*0.04));
 
-  // Barcode-style decoration at bottom
-  ctx.globalAlpha=0.15;
-  for(let x=20;x<W-20;x+=4){
+  // Barcode strip at bottom
+  ctx.globalAlpha=0.12;
+  for(let x=30;x<W-30;x+=4){
     ctx.fillStyle='#000';
-    ctx.fillRect(x,H*0.82,Math.random()>0.5?2:1,H*0.08);
+    ctx.fillRect(x,H*0.83,Math.random()>0.5?2:1,H*0.07);
   }
   ctx.globalAlpha=1;
 
