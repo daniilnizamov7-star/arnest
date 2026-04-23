@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CAN RUSH — Arnest Factory Challenge</title>
+
+<!-- PWA Meta -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#07090e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CAN RUSH">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-32x32.png">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
 :root{--fire:#ff6b1a;--sparks:#ffcc00;--dark:#07090e;--panel:#111620;--steel:#7a8fa8;--arnest:#e8003d}
@@ -36,8 +47,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 .hp{background:rgba(7,9,14,.75);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--steel);backdrop-filter:blur(8px);white-space:nowrap}
 .hp kbd{background:#1a2030;border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:1px 5px;color:#fff;font-size:10px;font-family:monospace}
 
-/* SCREENS */
-.scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;background:radial-gradient(ellipse at 50% 38%,rgba(14,18,28,.97) 0%,rgba(7,9,14,.99) 100%)}
+/* SCREENS */.scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;background:radial-gradient(ellipse at 50% 38%,rgba(14,18,28,.97) 0%,rgba(7,9,14,.99) 100%)}
 .scr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 .scr.h{display:none}
 
@@ -47,7 +57,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 .logo-sub{font-size:clamp(10px,1.6vw,13px);letter-spacing:6px;color:var(--steel);text-transform:uppercase;margin-top:8px;text-align:center}
 
 /* ─── ARNEST BADGE ─── */
-.arnest-brand{  display:flex;align-items:center;gap:0;
+.arnest-brand{
+  display:flex;align-items:center;gap:0;
   margin-top:14px;
   position:relative;
 }
@@ -85,8 +96,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 .fg input,.fg select{background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:600;padding:11px 14px;outline:none;transition:.2s}
 .fg input:focus,.fg select:focus{border-color:var(--fire);box-shadow:0 0 0 2px rgba(255,107,26,.12)}
 .fg select option{background:#111620}
-.btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:13px 42px;border:none;border-radius:6px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
-.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,transparent 55%);pointer-events:none}
+.btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:13px 42px;border:none;border-radius:6px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,transparent 55%);pointer-events:none}
 .btn-p{background:linear-gradient(135deg,#ff6b1a,#d93a00);color:#fff;box-shadow:0 4px 28px rgba(255,107,26,.38)}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,107,26,.55)}
 .btn-s{background:var(--panel);color:#8a9bb0;border:1px solid rgba(255,255,255,.1)}
@@ -96,7 +106,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 
 /* LEADERBOARD */
 .lbp{width:330px;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-top:12px}
-.lbh{background:linear-gradient(135deg,#141c28,#0a1018);border-bottom:1px solid rgba(255,255,255,.07);padding:11px 18px;display:flex;align-items:center;gap:9px}.lbt{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--sparks)}
+.lbh{background:linear-gradient(135deg,#141c28,#0a1018);border-bottom:1px solid rgba(255,255,255,.07);padding:11px 18px;display:flex;align-items:center;gap:9px}
+.lbt{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--sparks)}
 .lbr{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(255,255,255,.04);transition:.2s}
 .lbr:hover{background:rgba(255,107,26,.05)}
 .lbri{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--steel)}
@@ -114,6 +125,9 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
   from { transform: scale(.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+/* INSTALL BUTTON */
+#install-btn{display:none}
 </style>
 </head>
 <body>
@@ -131,8 +145,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 <div id="combo"></div>
 
 <!-- HINTS -->
-<div id="hints" class="h">
-  <div class="hp"><kbd>←</kbd><kbd>→</kbd> полосы</div>
+<div id="hints" class="h">  <div class="hp"><kbd>←</kbd><kbd>→</kbd> полосы</div>
   <div class="hp"><kbd>↑</kbd>/<kbd>Пробел</kbd> прыжок</div>
   <div class="hp"><kbd>↓</kbd> слайд</div>
   <div class="hp">📱 свайп</div>
@@ -145,7 +158,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 
   <!-- ARNEST BRAND BADGE -->
   <div class="arnest-brand">
-    <div class="arnest-logo-wrap">      <div class="arnest-logo-icon">
+    <div class="arnest-logo-wrap">
+      <div class="arnest-logo-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="7" y="3" width="10" height="18" rx="3" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.5"/>
           <rect x="9" y="5" width="6" height="2" rx="1" fill="white" opacity="0.7"/>
@@ -180,8 +194,12 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
     <button class="btn btn-p" id="sb2" style="width:310px;margin-top:6px">🚀 НАЧАТЬ ГОНКУ</button>
     
     <!-- INVITE BUTTON -->
+    <div style="margin-top:8px">      <button class="btn btn-s" id="invite-btn" style="width:310px;padding:10px">📤 Пригласить друга</button>
+    </div>
+    
+    <!-- INSTALL BUTTON -->
     <div style="margin-top:8px">
-      <button class="btn btn-s" id="invite-btn" style="width:310px;padding:10px">📤 Пригласить друга</button>
+      <button class="btn btn-s" id="install-btn" style="width:310px;padding:10px">📲 Установить приложение</button>
     </div>
   </div>
 
@@ -194,6 +212,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
     <div id="lb1"></div>
   </div>
 </div>
+
 <!-- ═══ GAME OVER ═══ -->
 <div class="scr h" id="gos">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:6px;color:var(--steel)">КОНВЕЙЕР ОСТАНОВЛЕН</div>
@@ -224,8 +243,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
       <input id="share-url" readonly 
         style="background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:13px;padding:8px 12px;max-width:280px;text-align:center"
       />
-      <button class="btn btn-s" id="copy-btn" style="padding:8px 16px;font-size:14px">📋 Копировать</button>
-    </div>
+      <button class="btn btn-s" id="copy-btn" style="padding:8px 16px;font-size:14px">📋 Копировать</button>    </div>
     
     <button class="btn btn-s" id="qr-close" style="margin-top:20px;padding:10px 32px">✕ Закрыть</button>
   </div>
@@ -243,7 +261,8 @@ const SB_H={apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`};
 
 async function getScores(){
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/can_rush_scores?order=score.desc&limit=10`,{headers:SB_H});    return r.ok?await r.json():[];
+    const r=await fetch(`${SB_URL}/rest/v1/can_rush_scores?order=score.desc&limit=10`,{headers:SB_H});
+    return r.ok?await r.json():[];
   }catch{return[];}
 }
 async function saveScore(name,dept,score){
@@ -273,8 +292,7 @@ async function renderLB(id){
       <div class="lbri ${medals[i]||''}">${i+1}</div>
       <div><div class="lbn">${esc(s.name)}</div><div class="lbd">${esc(s.dept)}</div></div>
       <div class="lbs">${s.score.toLocaleString()}</div>
-    </div>`).join('');
-}
+    </div>`).join('');}
 renderLB('lb1');
 
 // ═══════════════════════════════
@@ -292,7 +310,8 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=1.1;
 renderer.setClearColor(0x050710);
 
-const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x050710,0.021);
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x050710,0.021);
 
 const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,130);
 camera.position.set(0,3.8,8);
@@ -322,8 +341,7 @@ for(let i=0;i<2;i++){
 //  BELT TEXTURE
 // ═══════════════════════════════
 function mkBeltTex(){
-  const SZ=isMobile?128:256;
-  const c=document.createElement('canvas');c.width=SZ;c.height=SZ;
+  const SZ=isMobile?128:256;  const c=document.createElement('canvas');c.width=SZ;c.height=SZ;
   const ctx=c.getContext('2d');
   ctx.fillStyle='#1a2232';ctx.fillRect(0,0,SZ,SZ);
   ctx.strokeStyle='#222c40';ctx.lineWidth=isMobile?5:9;
@@ -342,6 +360,7 @@ const divMat=new THREE.MeshStandardMaterial({color:0x2a3a55,emissive:0x1a2a45,em
 //  BELT TILES
 // ═══════════════════════════════
 const BELT_W=6, LANE_W=2, TILE_L=5, N_TILES=isMobile?10:14;
+
 function mkTile(z){
   const g=new THREE.Group();
   const bm=new THREE.Mesh(new THREE.BoxGeometry(BELT_W,.2,TILE_L),beltMat);
@@ -371,8 +390,7 @@ const wallM=new THREE.MeshStandardMaterial({color:0x111820,roughness:.9,metalnes
   w.position.set(x,4,-90);w.receiveShadow=true;scene.add(w);
 });
 const floorMesh=new THREE.Mesh(new THREE.BoxGeometry(20,.1,200),new THREE.MeshStandardMaterial({color:0x0b0f18,roughness:.95}));
-floorMesh.position.set(0,-.2,-90);floorMesh.receiveShadow=true;scene.add(floorMesh);
-const ceilMesh=new THREE.Mesh(new THREE.BoxGeometry(14,.3,200),new THREE.MeshStandardMaterial({color:0x0c1218,roughness:.85}));
+floorMesh.position.set(0,-.2,-90);floorMesh.receiveShadow=true;scene.add(floorMesh);const ceilMesh=new THREE.Mesh(new THREE.BoxGeometry(14,.3,200),new THREE.MeshStandardMaterial({color:0x0c1218,roughness:.85}));
 ceilMesh.position.set(0,8,-90);scene.add(ceilMesh);
 
 const pipeM=new THREE.MeshStandardMaterial({color:0x3a4858,metalness:.7,roughness:.4});
@@ -390,7 +408,8 @@ for(let i=0;i<8;i++){
 // Hanging lamps
 const lmpM=new THREE.MeshStandardMaterial({color:0x1c2430,roughness:.6});
 const blbM=new THREE.MeshStandardMaterial({color:0xfffae0,emissive:0xfffae0,emissiveIntensity:1.8});
-for(let i=0;i<(isMobile?4:8);i++){  const grp=new THREE.Group();
+for(let i=0;i<(isMobile?4:8);i++){
+  const grp=new THREE.Group();
   const shade=new THREE.Mesh(new THREE.CylinderGeometry(.45,.28,.35,10,1,true),lmpM);
   shade.position.y=-.18;grp.add(shade);
   const blb=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),blbM);
@@ -420,8 +439,7 @@ function makeCanTexture(){
   bg.addColorStop(0.38,'#eef2f8');
   bg.addColorStop(0.5, '#f6faff');
   bg.addColorStop(0.62,'#dce4f0');
-  bg.addColorStop(0.85,'#c0c8d8');
-  bg.addColorStop(1,   '#a8b0bc');
+  bg.addColorStop(0.85,'#c0c8d8');  bg.addColorStop(1,   '#a8b0bc');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
   ctx.globalAlpha=0.06;
@@ -439,7 +457,8 @@ function makeCanTexture(){
   ctx.fillStyle=red; ctx.fillRect(0,bandY,W,bandH);
 
   ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,bandY-3,W,5);  ctx.fillRect(0,bandY+bandH-2,W,5);
+  ctx.fillRect(0,bandY-3,W,5);
+  ctx.fillRect(0,bandY+bandH-2,W,5);
 
   const fontSize=Math.round(W*0.175);
   ctx.save();
@@ -469,7 +488,6 @@ function makeCanTexture(){
   const t=new THREE.CanvasTexture(c);
   return t;
 }
-
 function makeCan(){
   const g=new THREE.Group();
   const R=0.38, H=1.80, TOP_R=0.30, NECK=0.22, SEG=isMobile?16:28;
@@ -488,7 +506,8 @@ function makeCan(){
   const body=new THREE.Mesh(new THREE.LatheGeometry(profile,SEG),alMat);
   body.castShadow=true; g.add(body);
 
-  const lblH=H-NECK-0.22;  const lblY=(-H/2+0.18 + H/2-NECK)/2;
+  const lblH=H-NECK-0.22;
+  const lblY=(-H/2+0.18 + H/2-NECK)/2;
   const lblMesh=new THREE.Mesh(new THREE.CylinderGeometry(R+0.001, R+0.001, lblH, SEG), labelMat);
   lblMesh.position.y=lblY;
   g.add(lblMesh);
@@ -518,8 +537,7 @@ function makeCan(){
   const tabM=new THREE.MeshStandardMaterial({color:0x8898a8,metalness:0.9,roughness:0.20});
   const tabRing=new THREE.Mesh(new THREE.TorusGeometry(0.058,0.016,6,14),tabM);
   tabRing.position.set(0.08,H/2+0.014,0); tabRing.rotation.x=Math.PI*0.3; g.add(tabRing);
-  const armCurve=new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0,0,0),new THREE.Vector3(0.05,0.007,0),
+  const armCurve=new THREE.CatmullRomCurve3([    new THREE.Vector3(0,0,0),new THREE.Vector3(0.05,0.007,0),
     new THREE.Vector3(0.13,-0.007,0),new THREE.Vector3(0.17,-0.010,0)
   ]);
   const arm=new THREE.Mesh(new THREE.TubeGeometry(armCurve,8,0.010,5,false),tabM);
@@ -537,7 +555,8 @@ function makeCan(){
 }
 
 const player=makeCan();
-player.position.set(0,0.90,4);scene.add(player);
+player.position.set(0,0.90,4);
+scene.add(player);
 const HIT_R=0.33;
 
 // ═══════════════════════════════
@@ -567,8 +586,7 @@ function tickSparks(dt){
       const last=spActive-1;
       spPos[i*3]=spPos[last*3];spPos[i*3+1]=spPos[last*3+1];spPos[i*3+2]=spPos[last*3+2];
       spVel[i]=spVel[last];spPos[last*3+1]=-200;spActive--;
-    }else{
-      v.y-=dt*.45;
+    }else{      v.y-=dt*.45;
       spPos[i*3]+=v.x*dt*60;spPos[i*3+1]+=v.y*dt*60;spPos[i*3+2]+=v.z*dt*60;
       i++;
     }
@@ -586,6 +604,7 @@ const OBS_DEF=[
   {name:'crate',  full:false, w:1.1, h:1.4,  d:1.0, col:0x3a4858,emi:0x1a2030},
 ];
 const obsPool=[];
+
 function spawnObs(){
   const ti=Math.floor(Math.random()*OBS_DEF.length);
   const def=OBS_DEF[ti];
@@ -616,7 +635,6 @@ function spawnObs(){
       grp.add(s);
     }
   }
-
   grp.position.z=-48;
   grp.userData={type:ti,def,active:true,posX,cy,lane,full:def.full};
   scene.add(grp);
@@ -635,7 +653,8 @@ const BUCKET_COLORS=[
   {paint:0xffffff, metal:0xcccccc, name:'white'},
 ];
 
-function makeBucket(colorDef){  const g=new THREE.Group();
+function makeBucket(colorDef){
+  const g=new THREE.Group();
   const SEG=isMobile?8:14;
 
   const bodyM=new THREE.MeshStandardMaterial({
@@ -665,7 +684,6 @@ function makeBucket(colorDef){  const g=new THREE.Group();
   });
   const paintSurf=new THREE.Mesh(new THREE.CircleGeometry(0.205,SEG),paintM);
   paintSurf.rotation.x=Math.PI/2; paintSurf.position.y=0.365; g.add(paintSurf);
-
   const dripM=new THREE.MeshStandardMaterial({
     color:colorDef.paint, metalness:0.0, roughness:0.4,
     emissive:colorDef.paint, emissiveIntensity:0.2
@@ -684,7 +702,8 @@ function makeBucket(colorDef){  const g=new THREE.Group();
   return g;
 }
 
-function spawnCollect(){  const lane=Math.floor(Math.random()*3);
+function spawnCollect(){
+  const lane=Math.floor(Math.random()*3);
   const inAir=Math.random()<0.25;
   const baseY=inAir?2.0:0.01;
   const colorDef=BUCKET_COLORS[Math.floor(Math.random()*BUCKET_COLORS.length)];
@@ -714,8 +733,7 @@ let G={
 function resetG(){
   G.lane=1;G.targetX=0;G.y=0.90;G.vy=0;
   G.jumping=false;G.sliding=false;G.slideT=0;
-  G.lives=3;G.score=0;G.speed=6.5;G.dist=0;
-  G.combo=0;G.comboT=0;G.inv=0;
+  G.lives=3;G.score=0;G.speed=6.5;G.dist=0;  G.combo=0;G.comboT=0;G.inv=0;
   G.spawnT=0;G.cspawnT=0;G.shake=0;G.tiltZ=0;
 }
 
@@ -733,7 +751,8 @@ function checkCollisions(){
     const {def,posX,cy,full}=o.userData;
     const oz=o.position.z;
 
-    if(Math.abs(pz-oz) > def.d/2+.28) continue;    const dx=Math.abs(px-posX);
+    if(Math.abs(pz-oz) > def.d/2+.28) continue;
+    const dx=Math.abs(px-posX);
     const hitHalfW=full ? (BELT_W/2-.05) : (def.w/2-.1);
     if(dx > HIT_R+hitHalfW-.18) continue;
 
@@ -763,8 +782,7 @@ function checkCoins(){
       G.combo++;G.comboT=2.5;G.score+=10*G.combo;
       burstSparks(c.position.x,c.position.y,c.position.z,20);
       doFlash('gold');
-      if(G.combo>=3) showCombo();
-    }
+      if(G.combo>=3) showCombo();    }
   }
 }
 
@@ -782,7 +800,8 @@ function doFlash(t){
   f.style.opacity='1';
   setTimeout(()=>f.style.opacity='0',100);
 }
-function showCombo(){  const el=document.getElementById('combo');
+function showCombo(){
+  const el=document.getElementById('combo');
   el.textContent=`×${G.combo} COMBO!`;el.style.opacity='1';
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.opacity='0',900);
 }
@@ -812,8 +831,7 @@ canvas.addEventListener('touchend',e=>{
 },{passive:true});
 
 function moveLane(d){
-  const nl=Math.max(0,Math.min(2,G.lane+d));
-  if(nl===G.lane) return;
+  const nl=Math.max(0,Math.min(2,G.lane+d));  if(nl===G.lane) return;
   G.lane=nl;G.targetX=LANES_X[G.lane];G.tiltZ=d<0?.2:-.2;
 }
 function doJump(){
@@ -832,6 +850,7 @@ function doSlide(){
 function updPlayer(dt){
   player.position.x+=(G.targetX-player.position.x)*Math.min(dt*14,1);
   G.tiltZ*=.87;player.rotation.z=G.tiltZ;
+
   if(G.jumping){
     G.vy+=GRAV*dt;G.y+=G.vy*dt;
     if(G.y<=0.90){G.y=0.90;G.vy=0;G.jumping=false;}
@@ -862,7 +881,6 @@ function updBelt(dt){
   bTex.offset.y=(bTex.offset.y-move*.055)%1;
   bTex.needsUpdate=true;
 }
-
 function updObs(dt){
   for(let i=obsPool.length-1;i>=0;i--){
     obsPool[i].position.z+=G.speed*dt;
@@ -880,7 +898,8 @@ function updCoins(dt){
       }
       c.rotation.z=Math.sin(t*2+c.userData.bobOff)*.04;
     }
-    if(c.position.z>10){scene.remove(c);collectPool.splice(i,1);G.combo=0;}  }
+    if(c.position.z>10){scene.remove(c);collectPool.splice(i,1);G.combo=0;}
+  }
 }
 function updCam(dt){
   if(G.shake>0){
@@ -910,8 +929,7 @@ function updScore(dt){
   if(G.comboT>0) G.comboT-=dt;
 }
 function updHUD(){
-  document.getElementById('sc').textContent=G.score.toLocaleString();
-  document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
+  document.getElementById('sc').textContent=G.score.toLocaleString();  document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
   document.getElementById('pbf').style.width=(Math.min((G.dist/600)%1,1)*100)+'%';
 }
 function renderLives(){
@@ -929,6 +947,7 @@ function renderLives(){
 function loop(ts){
   requestAnimationFrame(loop);
   const dt=Math.min((ts-(G.lt||ts))/1000,.05);G.lt=ts;
+
   if(G.running){
     updBelt(dt);updPlayer(dt);updScore(dt);
     updCam(dt);updLights(dt);tickSparks(dt);
@@ -960,7 +979,6 @@ function startGame(){
   const dept=document.getElementById('di').value;
   G.name=name;G.dept=dept;
   document.getElementById('pname-hud').textContent=name;
-
   obsPool.slice().forEach(o=>scene.remove(o));
   obsPool.length=0;
   collectPool.slice().forEach(c=>scene.remove(c));
@@ -978,7 +996,8 @@ function startGame(){
   document.getElementById('ss').classList.add('h');
   document.getElementById('gos').classList.add('h');
   document.getElementById('hud').classList.remove('h');
-  document.getElementById('hints').classList.remove('h');}
+  document.getElementById('hints').classList.remove('h');
+}
 
 function endGame(){
   G.running=false;
@@ -1008,8 +1027,7 @@ function endGame(){
 
 // ── BUTTON LISTENERS ──
 document.getElementById('sb2').addEventListener('click',startGame);
-document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});
-document.getElementById('rb').addEventListener('click',()=>{document.getElementById('gos').classList.add('h');startGame();});
+document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});document.getElementById('rb').addEventListener('click',()=>{document.getElementById('gos').classList.add('h');startGame();});
 document.getElementById('mb').addEventListener('click',()=>{
   document.getElementById('gos').classList.add('h');
   document.getElementById('ss').classList.remove('h');
@@ -1027,7 +1045,8 @@ function generateQR() {
   container.innerHTML = '';
   
   const shareUrl = window.location.href.split('#')[0];
-  const urlInput = document.getElementById('share-url');  if (urlInput) urlInput.value = shareUrl;
+  const urlInput = document.getElementById('share-url');
+  if (urlInput) urlInput.value = shareUrl;
   
   if (typeof QRCode !== 'undefined') {
     qrCode = new QRCode(container, {
@@ -1056,8 +1075,37 @@ function hideQRModal() {
   if (startScreen) startScreen.classList.remove('h');
 }
 
-// Event listeners for QR system
+// ═══════════════════════════════
+//  PWA INSTALL SYSTEM// ═══════════════════════════════
+let deferredPrompt;
+const installBtn = document.getElementById('install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) installBtn.style.display = 'block';
+  console.log('[PWA] Доступна установка');
+});
+
+window.addEventListener('appinstalled', () => {
+  if (installBtn) installBtn.style.display = 'none';
+  console.log('[PWA] Приложение установлено');
+});
+
+async function promptInstall() {
+  if (!deferredPrompt) return false;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  console.log(`[PWA] Установка: ${outcome}`);
+  deferredPrompt = null;
+  return outcome === 'accepted';
+}
+
+// ═══════════════════════════════
+//  INITIALIZATION
+// ═══════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // QR System
   const inviteBtn = document.getElementById('invite-btn');
   const qrClose = document.getElementById('qr-close');
   const qrModal = document.getElementById('qr-modal');
@@ -1076,8 +1124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     copyBtn.addEventListener('click', async () => {
       const input = document.getElementById('share-url');
       if (!input) return;
-      try {        await navigator.clipboard.writeText(input.value);
-        const originalText = copyBtn.textContent;
+      try {
+        await navigator.clipboard.writeText(input.value);        const originalText = copyBtn.textContent;
         copyBtn.textContent = '✓ Скопировано!';
         copyBtn.style.borderColor = 'var(--fire)';
         copyBtn.style.color = 'var(--fire)';
@@ -1098,7 +1146,36 @@ document.addEventListener('DOMContentLoaded', () => {
     generateQR();
     if (qrModal) qrModal.classList.add('h');
   }
+  
+  // Install button
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      const installed = await promptInstall();
+      if (installed) installBtn.style.display = 'none';
+    });
+  }
 });
+
+// ═══════════════════════════════
+//  SERVICE WORKER REGISTRATION
+// ═══════════════════════════════
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => {
+        console.log('[PWA] SW зарегистрирован:', reg.scope);
+        
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('[PWA] Доступно обновление!');
+            }
+          });
+        });
+      })
+      .catch((err) => console.error('[PWA] Ошибка регистрации SW:', err));  });
+}
 </script>
 </body>
 </html>
