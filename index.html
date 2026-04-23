@@ -19,7 +19,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
 :root{--fire:#ff6b1a;--sparks:#ffcc00;--dark:#07090e;--panel:#111620;--steel:#7a8fa8;--arnest:#e8003d}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;width:100vw;height:100vh;touch-action:none;overscroll-behavior:none}
+html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;width:100vw;height:100vh;touch-action:none}
 #gc{display:block;position:absolute;inset:0;width:100%;height:100%}
 
 /* HUD */
@@ -78,14 +78,25 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
 .brow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 
 /* LEADERBOARD (ИСПРАВЛЕНО: скролл) */
-.lbp{width:330px;max-height:35vh;overflow-y:auto;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-top:12px;scrollbar-width:thin;scrollbar-color:var(--fire) transparent}
-.lbp::-webkit-scrollbar{width:4px}
-.lbp::-webkit-scrollbar-thumb{background:var(--fire);border-radius:2px}
-.lbp::-webkit-scrollbar-track{background:transparent}
+.lbp{
+  width:330px;
+  max-height:30vh; /* Ограничиваем высоту */
+  overflow-y:auto; /* Включаем скролл */
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  margin-top:12px;
+  /* Стили скроллбара */
+  scrollbar-width: thin;
+  scrollbar-color: var(--fire) var(--dark);
+}
+.lbp::-webkit-scrollbar{width:6px}
+.lbp::-webkit-scrollbar-thumb{background:var(--fire);border-radius:3px}
+.lbp::-webkit-scrollbar-track{background:var(--dark)}
+
 .lbh{background:linear-gradient(135deg,#141c28,#0a1018);border-bottom:1px solid rgba(255,255,255,.07);padding:11px 18px;display:flex;align-items:center;gap:9px;position:sticky;top:0;z-index:2}
 .lbt{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--sparks)}
-.lbr{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(255,255,255,.04);transition:.2s}
-.lbr:hover{background:rgba(255,107,26,.05)}
+.lbr{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(255,255,255,.04);transition:.2s}.lbr:hover{background:rgba(255,107,26,.05)}
 .lbri{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--steel)}
 .lbri.g{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.4)}.lbri.s{color:#c0c0c0}.lbri.b{color:#cd7f32}
 .lbn{font-size:14px;font-weight:600;color:#fff}.lbd{font-size:10px;color:var(--steel)}
@@ -96,6 +107,7 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
 /* QR MODAL ANIMATION */
 #qr-modal:not(.h) #qrcode {animation: popIn .3s cubic-bezier(.175,.885,.32,1.275)}
 @keyframes popIn {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}
+
 /* INSTALL BUTTON */
 #install-btn{display:none}
 </style>
@@ -133,8 +145,7 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
       <div class="arnest-logo-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="7" y="3" width="10" height="18" rx="3" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.5"/>
-          <rect x="9" y="5" width="6" height="2" rx="1" fill="white" opacity="0.7"/>
-          <rect x="9" y="8" width="6" height="1" rx=".5" fill="white" opacity="0.4"/>
+          <rect x="9" y="5" width="6" height="2" rx="1" fill="white" opacity="0.7"/>          <rect x="9" y="8" width="6" height="1" rx=".5" fill="white" opacity="0.4"/>
           <rect x="9" y="10" width="6" height="1" rx=".5" fill="white" opacity="0.4"/>
           <path d="M9 17.5 Q12 19 15 17.5" stroke="white" stroke-width="1.2" fill="none" opacity="0.8"/>
         </svg>
@@ -145,7 +156,8 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
   </div>
 
   <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px">
-    <div class="fg">      <label>Твоё имя</label>
+    <div class="fg">
+      <label>Твоё имя</label>
       <input id="ni" placeholder="Введи имя" maxlength="20" autocomplete="off"/>
     </div>
     <div class="fg">
@@ -182,8 +194,7 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
   </div>
 </div>
 
-<!-- ═══ GAME OVER ═══ -->
-<div class="scr h" id="gos">
+<!-- ═══ GAME OVER ═══ --><div class="scr h" id="gos">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:6px;color:var(--steel)">КОНВЕЙЕР ОСТАНОВЛЕН</div>
   <div id="go-score">0</div>
   <div id="go-msg"></div>
@@ -194,7 +205,8 @@ html,body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidd
   <div class="lbp" style="margin-top:20px">
     <div class="lbh"><span style="font-size:17px">🏆</span><span class="lbt">Топ завода</span></div>
     <div id="lb2"></div>
-  </div></div>
+  </div>
+</div>
 
 <!-- ═══ QR INVITE MODAL ═══ -->
 <div class="scr h" id="qr-modal" style="background:rgba(7,9,14,.94);z-index:150">
@@ -231,19 +243,17 @@ async function getScores(){
 async function saveScore(name,dept,score){
   try{
     const r=await fetch(`${SB_URL}/rest/v1/can_rush_scores?name=eq.${encodeURIComponent(name)}&dept=eq.${encodeURIComponent(dept)}&select=id,score`,{headers:SB_H});
-    const rows=r.ok?await r.json():[];
-    if(rows.length&&rows[0].score>=score)return;
+    const rows=r.ok?await r.json():[];    if(rows.length&&rows[0].score>=score)return;
     const method=rows.length?'PATCH':'POST';
     const url=rows.length?`${SB_URL}/rest/v1/can_rush_scores?id=eq.${rows[0].id}`:`${SB_URL}/rest/v1/can_rush_scores`;
     await fetch(url,{method,headers:{...SB_H,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({name,dept,score})});
   }catch{}
 }
 
-function esc(s){
-  return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');
-}
+function esc(s){return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
-async function renderLB(id){  const scores=await getScores();
+async function renderLB(id){
+  const scores=await getScores();
   const el=document.getElementById(id);
   const ld=document.getElementById('lbl');
   if(ld)ld.textContent='';
@@ -277,13 +287,12 @@ renderer.toneMappingExposure=1.1;
 renderer.setClearColor(0x050710);
 
 const scene=new THREE.Scene();
-// ИСПРАВЛЕНИЕ 1: Линейный туман вместо экспоненциального -> плавное исчезновение без пульсаций
-scene.fog=new THREE.Fog(0x050710, 20, 65);
+// ИСПРАВЛЕНИЕ: Мягкий туман, чтобы конвейер исчезал плавно и не "пульсировал"
+scene.fog=new THREE.FogExp2(0x050710, 0.015);
 
 const camera=new THREE.PerspectiveCamera(85,innerWidth/innerHeight,.1,130);
 camera.position.set(0, 6.0, 9.0);
 camera.lookAt(0, 1.5, -4);
-
 scene.add(new THREE.AmbientLight(0x2a3550,1.4));
 const sun=new THREE.DirectionalLight(0xfff4e0,1.5);
 sun.position.set(4,14,6);
@@ -292,7 +301,8 @@ if(!isMobile){
   sun.shadow.mapSize.set(1024,1024);
   sun.shadow.camera.left=-9;
   sun.shadow.camera.right=9;
-  sun.shadow.camera.top=9;  sun.shadow.camera.bottom=-2;
+  sun.shadow.camera.top=9;
+  sun.shadow.camera.bottom=-2;
   sun.shadow.bias=-0.001;
 }
 scene.add(sun);
@@ -331,8 +341,8 @@ const bTex=mkBeltTex();
 const beltMat=new THREE.MeshStandardMaterial({map:bTex,roughness:.72,metalness:.18});
 const edgeMat=new THREE.MeshStandardMaterial({color:0xff6b1a,emissive:0xff6b1a,emissiveIntensity:.75,roughness:.4});
 const divMat=new THREE.MeshStandardMaterial({color:0x2a3a55,emissive:0x1a2a45,emissiveIntensity:.45});
-
-const BELT_W=6, LANE_W=2, TILE_L=5, N_TILES=isMobile?10:14;
+// ИСПРАВЛЕНИЕ: Увеличил количество плиток до 18, чтобы конвейер был длиннее
+const BELT_W=6, LANE_W=2, TILE_L=5, N_TILES=18;
 
 function mkTile(z){
   const g=new THREE.Group();
@@ -341,7 +351,8 @@ function mkTile(z){
   bm.receiveShadow=true;
   g.add(bm);
   [-BELT_W/2+.07, BELT_W/2-.07].forEach(x=>{
-    const e=new THREE.Mesh(new THREE.BoxGeometry(.1,.25,TILE_L),edgeMat);    e.position.set(x,.02,0);
+    const e=new THREE.Mesh(new THREE.BoxGeometry(.1,.25,TILE_L),edgeMat);
+    e.position.set(x,.02,0);
     g.add(e);
   });
   [-LANE_W/2, LANE_W/2].forEach(x=>{
@@ -379,8 +390,7 @@ for(let i=0;i<(isMobile?6:16);i++){
   p.position.set(0,6.5,-i*5-3);
   scene.add(p);
 }
-for(let i=0;i<8;i++){
-  [-5,5].forEach(x=>{
+for(let i=0;i<8;i++){  [-5,5].forEach(x=>{
     const p=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,3,8),pipeM);
     p.position.set(x,5.5,-i*10-3);
     scene.add(p);
@@ -390,7 +400,8 @@ for(let i=0;i<8;i++){
 const lmpM=new THREE.MeshStandardMaterial({color:0x1c2430,roughness:.6});
 const blbM=new THREE.MeshStandardMaterial({color:0xfffae0,emissive:0xfffae0,emissiveIntensity:1.8});
 for(let i=0;i<(isMobile?4:8);i++){
-  const grp=new THREE.Group();  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.45,.28,.35,10,1,true),lmpM);
+  const grp=new THREE.Group();
+  const shade=new THREE.Mesh(new THREE.CylinderGeometry(.45,.28,.35,10,1,true),lmpM);
   shade.position.y=-.18;
   grp.add(shade);
   const blb=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),blbM);
@@ -428,8 +439,7 @@ function makeCanTexture(){
   ctx.globalAlpha=0.06;
   for(let x=0;x<W;x+=4){
     ctx.fillStyle=Math.random()>.5?'#ffffff':'#808898';
-    ctx.fillRect(x,0,1,H);
-  }
+    ctx.fillRect(x,0,1,H);  }
   ctx.globalAlpha=1;
   const bandY=H*0.26, bandH=H*0.46;
   const red=ctx.createLinearGradient(0,bandY,0,bandY+bandH);
@@ -439,7 +449,8 @@ function makeCanTexture(){
   ctx.fillStyle=red;
   ctx.fillRect(0,bandY,W,bandH);
   ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,bandY-3,W,5);  ctx.fillRect(0,bandY+bandH-2,W,5);
+  ctx.fillRect(0,bandY-3,W,5);
+  ctx.fillRect(0,bandY+bandH-2,W,5);
   const fontSize=Math.round(W*0.175);
   ctx.save();
   ctx.textAlign='center';
@@ -477,8 +488,7 @@ function makeCan(){
   const labelTex=makeCanTexture();
   const alMat=new THREE.MeshStandardMaterial({color:0xd8e0ec,metalness:0.97,roughness:0.05});
   const labelMat=new THREE.MeshStandardMaterial({map:labelTex,metalness:0.7,roughness:0.2});
-  const body=new THREE.Mesh(new THREE.LatheGeometry(profile,SEG),alMat);
-  body.castShadow=true;
+  const body=new THREE.Mesh(new THREE.LatheGeometry(profile,SEG),alMat);  body.castShadow=true;
   g.add(body);
   const lblH=H-NECK-0.22;
   const lblY=(-H/2+0.18+H/2-NECK)/2;
@@ -488,7 +498,8 @@ function makeCan(){
   const botM=new THREE.MeshStandardMaterial({color:0xb0b8c8,metalness:0.96,roughness:0.07});
   const botRing=new THREE.Mesh(new THREE.TorusGeometry(R*0.70,0.038,7,SEG),botM);
   botRing.rotation.x=Math.PI/2;
-  botRing.position.y=-H/2+0.042;  g.add(botRing);
+  botRing.position.y=-H/2+0.042;
+  g.add(botRing);
   const botDisk=new THREE.Mesh(new THREE.CircleGeometry(R*0.66,SEG),botM);
   botDisk.rotation.x=-Math.PI/2;
   botDisk.position.y=-H/2+0.006;
@@ -526,8 +537,7 @@ function makeCan(){
   g.add(rivet);
   const hlMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.10,depthWrite:false});
   g.add(new THREE.Mesh(new THREE.CylinderGeometry(R+0.003,R+0.003,lblH*0.9,SEG,1,true,Math.PI*0.27,Math.PI*0.08),hlMat));
-  return g;
-}
+  return g;}
 
 const player=makeCan();
 player.position.set(0,0.90,4);
@@ -537,7 +547,8 @@ const HIT_R=0.33;
 const SP_MAX=130;
 const spGeo=new THREE.BufferGeometry();
 const spPos=new Float32Array(SP_MAX*3);
-const spVel=Array.from({length:SP_MAX},()=>({x:0,y:0,z:0,l:0}));for(let i=0;i<SP_MAX;i++) spPos[i*3+1]=-200;
+const spVel=Array.from({length:SP_MAX},()=>({x:0,y:0,z:0,l:0}));
+for(let i=0;i<SP_MAX;i++) spPos[i*3+1]=-200;
 spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
 const spMat=new THREE.PointsMaterial({color:0xffcc00,size:.13,transparent:true,opacity:.9,sizeAttenuation:true});
 scene.add(new THREE.Points(spGeo,spMat));
@@ -575,7 +586,6 @@ function tickSparks(dt){
   }
   spGeo.attributes.position.needsUpdate=true;
 }
-
 const OBS_DEF=[
   {name:'box',full:false,w:1.3,h:1.0,d:.9,col:0x7a5c30,emi:0x3c2c10},
   {name:'barrier',full:true,w:5.8,h:0.55,d:.35,col:0xbb2200,emi:0x771100,cy:.275},
@@ -586,7 +596,8 @@ const obsPool=[];
 
 function spawnObs(){
   const ti=Math.floor(Math.random()*OBS_DEF.length);
-  const def=OBS_DEF[ti];  const grp=new THREE.Group();
+  const def=OBS_DEF[ti];
+  const grp=new THREE.Group();
   const mat=new THREE.MeshStandardMaterial({color:def.col,emissive:def.emi,emissiveIntensity:.18,roughness:.68,metalness:ti===2?.65:.2});
   const mesh=new THREE.Mesh(new THREE.BoxGeometry(def.w,def.h,def.d),mat);
   mesh.castShadow=true;
@@ -624,8 +635,7 @@ const BUCKET_COLORS=[
 
 function makeBucket(colorDef){
   const g=new THREE.Group();
-  const SEG=isMobile?8:14;
-  const bodyM=new THREE.MeshStandardMaterial({color:colorDef.metal,metalness:0.85,roughness:0.25,emissive:colorDef.metal,emissiveIntensity:0.08});
+  const SEG=isMobile?8:14;  const bodyM=new THREE.MeshStandardMaterial({color:colorDef.metal,metalness:0.85,roughness:0.25,emissive:colorDef.metal,emissiveIntensity:0.08});
   const body=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.18,0.38,SEG),bodyM);
   body.position.y=0.19;
   g.add(body);
@@ -635,7 +645,8 @@ function makeBucket(colorDef){
   bot.position.y=0.002;
   g.add(bot);
   const ribM=new THREE.MeshStandardMaterial({color:0x888890,metalness:0.95,roughness:0.15});
-  [0.10,0.24].forEach(y=>{    const rib=new THREE.Mesh(new THREE.TorusGeometry(0.195+y*0.08,0.012,5,SEG),ribM);
+  [0.10,0.24].forEach(y=>{
+    const rib=new THREE.Mesh(new THREE.TorusGeometry(0.195+y*0.08,0.012,5,SEG),ribM);
     rib.rotation.x=Math.PI/2;
     rib.position.y=y+0.06;
     g.add(rib);
@@ -674,7 +685,6 @@ function spawnCollect(){
   scene.add(grp);
   collectPool.push(grp);
 }
-
 const LANES_X=[-2,0,2];
 const GRAV=-25,JUMP_V=10.5,SLIDE_DUR=.55;
 
@@ -684,7 +694,8 @@ let G={
   lives:3,score:0,speed:6.5,dist:0,
   combo:0,comboT:0,inv:0,
   spawnT:0,cspawnT:0,
-  shake:0,tiltZ:0,lt:0,  name:'',dept:''
+  shake:0,tiltZ:0,lt:0,
+  name:'',dept:''
 };
 
 function resetG(){
@@ -723,7 +734,6 @@ function checkCollisions(){
     });
   }
 }
-
 function checkCoins(){
   const px=player.position.x,py=player.position.y,pz=player.position.z;
   for(let i=collectPool.length-1;i>=0;i--){
@@ -733,7 +743,8 @@ function checkCoins(){
       c.userData.active=false;
       scene.remove(c);
       collectPool.splice(i,1);
-      G.combo++;      G.comboT=2.5;
+      G.combo++;
+      G.comboT=2.5;
       G.score+=10*G.combo;
       burstSparks(c.position.x,c.position.y,c.position.z,20);
       doFlash('gold');
@@ -771,8 +782,7 @@ function showCombo(){
 
 const keys={};
 window.addEventListener('keydown',e=>{
-  if(!G.running||keys[e.code])return;
-  keys[e.code]=true;
+  if(!G.running||keys[e.code])return;  keys[e.code]=true;
   if(e.code==='ArrowLeft'||e.code==='KeyA')moveLane(-1);
   if(e.code==='ArrowRight'||e.code==='KeyD')moveLane(1);
   if(e.code==='ArrowUp'||e.code==='Space'||e.code==='KeyW'){doJump();e.preventDefault();}
@@ -782,7 +792,8 @@ window.addEventListener('keyup',e=>{keys[e.code]=false;});
 
 let tx=0,ty=0;
 canvas.addEventListener('touchstart',e=>{
-  tx=e.touches[0].clientX;  ty=e.touches[0].clientY;
+  tx=e.touches[0].clientX;
+  ty=e.touches[0].clientY;
 },{passive:true});
 canvas.addEventListener('touchend',e=>{
   if(!G.running)return;
@@ -820,8 +831,7 @@ function updPlayer(dt){
   player.position.x+=(G.targetX-player.position.x)*Math.min(dt*14,1);
   G.tiltZ*=.87;
   player.rotation.z=G.tiltZ;
-  if(G.jumping){
-    G.vy+=GRAV*dt;
+  if(G.jumping){    G.vy+=GRAV*dt;
     G.y+=G.vy*dt;
     if(G.y<=0.90){
       G.y=0.90;
@@ -831,7 +841,8 @@ function updPlayer(dt){
   }
   if(G.sliding){
     G.slideT-=dt;
-    player.scale.set(1,.5,1);    player.position.y=0.46;
+    player.scale.set(1,.5,1);
+    player.position.y=0.46;
     if(G.slideT<=0){
       G.sliding=false;
       player.scale.set(1,1,1);
@@ -851,13 +862,13 @@ function updPlayer(dt){
 
 function updBelt(dt){
   const move=G.speed*dt;
-  const WRAP_FRONT=8;
+  const WRAP_FRONT=10; // Увеличил зону рецикла
   const PUSH_BACK=N_TILES*TILE_L;
   beltTiles.forEach(tile=>{
     tile.position.z+=move;
     if(tile.position.z>WRAP_FRONT)tile.position.z-=PUSH_BACK;
   });
-  // ИСПРАВЛЕНИЕ 2: Убран % 1, чтобы текстура не дёргалась при зацикливании
+  // ИСПРАВЛЕНИЕ: Просто вычитаем, без % 1. wrapS/wrapT в Three.js зацикливают текстуру автоматически.
   bTex.offset.y-=move*0.055;
 }
 
@@ -870,7 +881,6 @@ function updObs(dt){
     }
   }
 }
-
 function updCoins(dt){
   const t=Date.now()*.001;
   for(let i=collectPool.length-1;i>=0;i--){
@@ -880,7 +890,8 @@ function updCoins(dt){
       if(c.userData.baseY>0.5)
         c.position.y=c.userData.baseY+Math.sin(t*2.5+c.userData.bobOff)*.09;
       c.rotation.z=Math.sin(t*2+c.userData.bobOff)*.04;
-    }    if(c.position.z>10){
+    }
+    if(c.position.z>10){
       scene.remove(c);
       collectPool.splice(i,1);
       G.combo=0;
@@ -919,7 +930,6 @@ function updScore(dt){
   G.speed=Math.min(6.5+G.dist/180,23);
   if(G.comboT>0)G.comboT-=dt;
 }
-
 function updHUD(){
   document.getElementById('sc').textContent=G.score.toLocaleString();
   document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
@@ -929,7 +939,8 @@ function updHUD(){
 function renderLives(){
   const el=document.getElementById('lives');
   el.innerHTML='';
-  for(let i=0;i<3;i++){    const d=document.createElement('div');
+  for(let i=0;i<3;i++){
+    const d=document.createElement('div');
     d.className='li'+(i>=G.lives?' dead':'');
     el.appendChild(d);
   }
@@ -967,8 +978,7 @@ function loop(ts){
 requestAnimationFrame(loop);
 
 window.addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
+  camera.aspect=innerWidth/innerHeight;  camera.updateProjectionMatrix();
   renderer.setSize(innerWidth,innerHeight);
 });
 
@@ -978,7 +988,8 @@ function startGame(){
   G.name=name;
   G.dept=dept;
   document.getElementById('pname-hud').textContent=name;
-  obsPool.slice().forEach(o=>scene.remove(o));  obsPool.length=0;
+  obsPool.slice().forEach(o=>scene.remove(o));
+  obsPool.length=0;
   collectPool.slice().forEach(c=>scene.remove(c));
   collectPool.length=0;
   player.position.set(0,0.90,4);
@@ -1016,8 +1027,7 @@ function endGame(){
       document.getElementById('go-msg').textContent='⭐ Результат сохранён локально';
       document.getElementById('lb2').innerHTML='<div style="padding:16px;text-align:center;color:var(--steel);font-size:12px">Нет связи с сервером</div>';
     }
-  })();
-}
+  })();}
 
 document.getElementById('sb2').addEventListener('click',startGame);
 document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});
@@ -1027,6 +1037,7 @@ document.getElementById('mb').addEventListener('click',()=>{
   document.getElementById('ss').classList.remove('h');
   renderLB('lb1');
 });
+
 let qrCode=null;
 
 function generateQR(){
@@ -1065,7 +1076,6 @@ function hideQRModal(){
 
 let deferredPrompt;
 const installBtn=document.getElementById('install-btn');
-
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();
   deferredPrompt=e;
@@ -1076,7 +1086,8 @@ window.addEventListener('appinstalled',()=>{
   if(installBtn)installBtn.style.display='none';
 });
 
-async function promptInstall(){  if(!deferredPrompt)return false;
+async function promptInstall(){
+  if(!deferredPrompt)return false;
   deferredPrompt.prompt();
   const{outcome}=await deferredPrompt.userChoice;
   deferredPrompt=null;
@@ -1114,8 +1125,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     generateQR();
     if(qrModal)qrModal.classList.add('h');
   }
-  if(installBtn)installBtn.addEventListener('click',async()=>{
-    const i=await promptInstall();
+  if(installBtn)installBtn.addEventListener('click',async()=>{    const i=await promptInstall();
     if(i)installBtn.style.display='none';
   });
 });
@@ -1125,7 +1135,8 @@ if('serviceWorker'in navigator){
     navigator.serviceWorker.register('/sw.js').then(reg=>{
       reg.addEventListener('updatefound',()=>{
         const nw=reg.installing;
-        nw.addEventListener('statechange',()=>{          if(nw.state==='installed'&&navigator.serviceWorker.controller)
+        nw.addEventListener('statechange',()=>{
+          if(nw.state==='installed'&&navigator.serviceWorker.controller)
             console.log('[PWA] Обновление готово!');
         });
       });
