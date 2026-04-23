@@ -266,7 +266,7 @@ async function renderLB(id){
 renderLB('lb1');
 
 // ═══════════════════════════════
-//  THREE.JS SETUP
+//  THREE.JS SETUP (ИСПРАВЛЕНО)
 // ═══════════════════════════════
 const isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||innerWidth<768;
 
@@ -281,12 +281,12 @@ renderer.toneMappingExposure=1.1;
 renderer.setClearColor(0x050710);
 
 const scene=new THREE.Scene();
-scene.fog=new THREE.FogExp2(0x050710,0.018); // Чуть меньше тумана
+scene.fog=new THREE.FogExp2(0x050710,0.018);
 
-// ИСПРАВЛЕНИЕ: Камера с FOV 75 и позиция дальше/выше
-const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,130);
-camera.position.set(0, 5.0, 11);
-camera.lookAt(0, 1, -5);
+// ИСПРАВЛЕНИЕ: Увеличиваем FOV до 85 градусов для широкого обзора
+const camera=new THREE.PerspectiveCamera(85,innerWidth/innerHeight,.1,130);
+camera.position.set(0, 6.0, 9.0); // Выше и ближе
+camera.lookAt(0, 1.5, -4);
 
 // ── LIGHTS ──
 scene.add(new THREE.AmbientLight(0x2a3550,1.4));
@@ -861,17 +861,17 @@ function updCoins(dt){
   }
 }
 
-// ИСПРАВЛЕНИЕ: Камера следует за игроком
+// ИСПРАВЛЕНИЕ: Камера жестче следует за игроком
 function updCam(dt){
   if(G.shake > 0){
     G.shake -= dt;
     camera.position.x = (Math.random()-.5) * G.shake * .5;
-    camera.position.y = 5.0 + (Math.random()-.5) * G.shake * .35;
+    camera.position.y = 6.0 + (Math.random()-.5) * G.shake * .35;
   } else {
-    // Камера плавно сдвигается в сторону движения игрока (на 30% от смещения)
-    const targetX = player.position.x * 0.3;
-    camera.position.x += (targetX - camera.position.x) * dt * 4;
-    camera.position.y += (5.0 - camera.position.y) * dt * 4;
+    // Камера плавно сдвигается в сторону движения игрока (на 40% от смещения)
+    const targetX = player.position.x * 0.4;
+    camera.position.x += (targetX - camera.position.x) * dt * 5;
+    camera.position.y += (6.0 - camera.position.y) * dt * 5;
   }
   // Камера смотрит чуть вперёд
   camera.lookAt(player.position.x * 0.1, 1.5, -4);
