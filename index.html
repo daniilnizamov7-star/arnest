@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CAN RUSH — Arnest Factory Challenge</title>
 
 <!-- PWA Meta -->
@@ -19,7 +19,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
 :root{--fire:#ff6b1a;--sparks:#ffcc00;--dark:#07090e;--panel:#111620;--steel:#7a8fa8;--arnest:#e8003d}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;width:100vw;height:100vh}
+body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;width:100vw;height:100vh;touch-action:none}
 #gc{display:block;position:absolute;inset:0;width:100%;height:100%}
 
 /* HUD */
@@ -57,46 +57,20 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 .logo-sub{font-size:clamp(10px,1.6vw,13px);letter-spacing:6px;color:var(--steel);text-transform:uppercase;margin-top:8px;text-align:center}
 
 /* ─── ARNEST BADGE ─── */
-.arnest-brand{
-  display:flex;align-items:center;gap:0;
-  margin-top:14px;
-  position:relative;
-}
-.arnest-logo-wrap{
-  background:var(--arnest);
-  padding:7px 14px 7px 16px;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%);
-  display:flex;align-items:center;gap:8px;
-}
-.arnest-logo-icon{
-  width:24px;height:24px;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
+.arnest-brand{display:flex;align-items:center;gap:0;margin-top:14px;position:relative}
+.arnest-logo-wrap{background:var(--arnest);padding:7px 14px 7px 16px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%);display:flex;align-items:center;gap:8px}
+.arnest-logo-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .arnest-logo-icon svg{width:100%;height:100%}
-.arnest-logo-text{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:18px;letter-spacing:3px;color:#fff;
-  white-space:nowrap;
-}
-.arnest-tagline{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  border-left:none;
-  padding:7px 16px 7px 20px;
-  font-family:'Rajdhani',sans-serif;
-  font-size:11px;letter-spacing:2.5px;
-  color:var(--steel);text-transform:uppercase;
-  white-space:nowrap;
-  border-radius:0 4px 4px 0;
-}
+.arnest-logo-text{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:#fff;white-space:nowrap}
+.arnest-tagline{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-left:none;padding:7px 16px 7px 20px;font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:2.5px;color:var(--steel);text-transform:uppercase;white-space:nowrap;border-radius:0 4px 4px 0}
 
 .fg{display:flex;flex-direction:column;gap:5px;width:310px;margin-top:8px}
 .fg label{font-size:10px;letter-spacing:3px;color:var(--steel);text-transform:uppercase}
 .fg input,.fg select{background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:600;padding:11px 14px;outline:none;transition:.2s}
 .fg input:focus,.fg select:focus{border-color:var(--fire);box-shadow:0 0 0 2px rgba(255,107,26,.12)}
 .fg select option{background:#111620}
-.btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:13px 42px;border:none;border-radius:6px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,transparent 55%);pointer-events:none}
+.btn{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;padding:13px 42px;border:none;border-radius:6px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,transparent 55%);pointer-events:none}
 .btn-p{background:linear-gradient(135deg,#ff6b1a,#d93a00);color:#fff;box-shadow:0 4px 28px rgba(255,107,26,.38)}
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,107,26,.55)}
 .btn-s{background:var(--panel);color:#8a9bb0;border:1px solid rgba(255,255,255,.1)}
@@ -118,17 +92,11 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 #go-msg{font-size:15px;letter-spacing:2px;color:var(--fire);min-height:22px;text-align:center;margin-bottom:18px}
 
 /* QR MODAL ANIMATION */
-#qr-modal:not(.h) #qrcode {
-  animation: popIn .3s cubic-bezier(.175,.885,.32,1.275);
-}
-@keyframes popIn {
-  from { transform: scale(.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+#qr-modal:not(.h) #qrcode {animation: popIn .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn {from {transform: scale(.8); opacity: 0;} to {transform: scale(1); opacity: 1;}}
 
 /* INSTALL BUTTON */
-#install-btn{display:none}
-</style>
+#install-btn{display:none}</style>
 </head>
 <body>
 
@@ -145,7 +113,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
 <div id="combo"></div>
 
 <!-- HINTS -->
-<div id="hints" class="h">  <div class="hp"><kbd>←</kbd><kbd>→</kbd> полосы</div>
+<div id="hints" class="h">
+  <div class="hp"><kbd>←</kbd><kbd>→</kbd> полосы</div>
   <div class="hp"><kbd>↑</kbd>/<kbd>Пробел</kbd> прыжок</div>
   <div class="hp"><kbd>↓</kbd> слайд</div>
   <div class="hp">📱 свайп</div>
@@ -176,8 +145,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
   <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px">
     <div class="fg">
       <label>Твоё имя</label>
-      <input id="ni" placeholder="Введи имя" maxlength="20" autocomplete="off"/>
-    </div>
+      <input id="ni" placeholder="Введи имя" maxlength="20" autocomplete="off"/>    </div>
     <div class="fg">
       <label>Смена / отдел</label>
       <select id="di">
@@ -195,7 +163,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
     <button class="btn btn-p" id="sb2" style="width:310px;margin-top:6px">🚀 НАЧАТЬ ГОНКУ</button>
     
     <!-- INVITE BUTTON -->
-    <div style="margin-top:8px">      <button class="btn btn-s" id="invite-btn" style="width:310px;padding:10px">📤 Пригласить друга</button>
+    <div style="margin-top:8px">
+      <button class="btn btn-s" id="invite-btn" style="width:310px;padding:10px">📤 Пригласить друга</button>
     </div>
     
     <!-- INSTALL BUTTON -->
@@ -225,8 +194,7 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
   </div>
   <div class="lbp" style="margin-top:20px">
     <div class="lbh"><span style="font-size:17px">🏆</span><span class="lbt">Топ завода</span></div>
-    <div id="lb2"></div>
-  </div>
+    <div id="lb2"></div>  </div>
 </div>
 
 <!-- ═══ QR INVITE MODAL ═══ -->
@@ -244,7 +212,8 @@ body{background:var(--dark);font-family:'Rajdhani',sans-serif;overflow:hidden;wi
       <input id="share-url" readonly 
         style="background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:13px;padding:8px 12px;max-width:280px;text-align:center"
       />
-      <button class="btn btn-s" id="copy-btn" style="padding:8px 16px;font-size:14px">📋 Копировать</button>    </div>
+      <button class="btn btn-s" id="copy-btn" style="padding:8px 16px;font-size:14px">📋 Копировать</button>
+    </div>
     
     <button class="btn btn-s" id="qr-close" style="margin-top:20px;padding:10px 32px">✕ Закрыть</button>
   </div>
@@ -274,8 +243,7 @@ async function saveScore(name,dept,score){
     const method=rows.length?'PATCH':'POST';
     const url=rows.length?`${SB_URL}/rest/v1/can_rush_scores?id=eq.${rows[0].id}`:`${SB_URL}/rest/v1/can_rush_scores`;
     await fetch(url,{method,headers:{...SB_H,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({name,dept,score})});
-  }catch{}
-}
+  }catch{}}
 function esc(s){return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');}
 
 async function renderLB(id){
@@ -293,7 +261,8 @@ async function renderLB(id){
       <div class="lbri ${medals[i]||''}">${i+1}</div>
       <div><div class="lbn">${esc(s.name)}</div><div class="lbd">${esc(s.dept)}</div></div>
       <div class="lbs">${s.score.toLocaleString()}</div>
-    </div>`).join('');}
+    </div>`).join('');
+}
 renderLB('lb1');
 
 // ═══════════════════════════════
@@ -312,18 +281,18 @@ renderer.toneMappingExposure=1.1;
 renderer.setClearColor(0x050710);
 
 const scene=new THREE.Scene();
-scene.fog=new THREE.FogExp2(0x050710,0.021);
+scene.fog=new THREE.FogExp2(0x050710,0.018); // Чуть меньше тумана
 
-const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,130);
-camera.position.set(0,3.8,8);
-camera.lookAt(0,1,0);
+// ИСПРАВЛЕНИЕ: Камера с FOV 75 и позиция дальше/выше
+const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,130);
+camera.position.set(0, 5.0, 11);
+camera.lookAt(0, 1, -5);
 
 // ── LIGHTS ──
 scene.add(new THREE.AmbientLight(0x2a3550,1.4));
 const sun=new THREE.DirectionalLight(0xfff4e0,1.5);
 sun.position.set(4,14,6);
-if(!isMobile){
-  sun.castShadow=true;
+if(!isMobile){  sun.castShadow=true;
   sun.shadow.mapSize.set(1024,1024);
   sun.shadow.camera.left=-9;sun.shadow.camera.right=9;
   sun.shadow.camera.top=9;sun.shadow.camera.bottom=-2;
@@ -342,7 +311,8 @@ for(let i=0;i<2;i++){
 //  BELT TEXTURE
 // ═══════════════════════════════
 function mkBeltTex(){
-  const SZ=isMobile?128:256;  const c=document.createElement('canvas');c.width=SZ;c.height=SZ;
+  const SZ=isMobile?128:256;
+  const c=document.createElement('canvas');c.width=SZ;c.height=SZ;
   const ctx=c.getContext('2d');
   ctx.fillStyle='#1a2232';ctx.fillRect(0,0,SZ,SZ);
   ctx.strokeStyle='#222c40';ctx.lineWidth=isMobile?5:9;
@@ -371,8 +341,7 @@ function mkTile(z){
     e.position.set(x,.02,0);g.add(e);
   });
   [-LANE_W/2, LANE_W/2].forEach(x=>{
-    const d=new THREE.Mesh(new THREE.BoxGeometry(.05,.02,TILE_L),divMat);
-    d.position.set(x,.11,0);g.add(d);
+    const d=new THREE.Mesh(new THREE.BoxGeometry(.05,.02,TILE_L),divMat);    d.position.set(x,.11,0);g.add(d);
   });
   g.position.z=z;
   scene.add(g);
@@ -391,7 +360,8 @@ const wallM=new THREE.MeshStandardMaterial({color:0x111820,roughness:.9,metalnes
   w.position.set(x,4,-90);w.receiveShadow=true;scene.add(w);
 });
 const floorMesh=new THREE.Mesh(new THREE.BoxGeometry(20,.1,200),new THREE.MeshStandardMaterial({color:0x0b0f18,roughness:.95}));
-floorMesh.position.set(0,-.2,-90);floorMesh.receiveShadow=true;scene.add(floorMesh);const ceilMesh=new THREE.Mesh(new THREE.BoxGeometry(14,.3,200),new THREE.MeshStandardMaterial({color:0x0c1218,roughness:.85}));
+floorMesh.position.set(0,-.2,-90);floorMesh.receiveShadow=true;scene.add(floorMesh);
+const ceilMesh=new THREE.Mesh(new THREE.BoxGeometry(14,.3,200),new THREE.MeshStandardMaterial({color:0x0c1218,roughness:.85}));
 ceilMesh.position.set(0,8,-90);scene.add(ceilMesh);
 
 const pipeM=new THREE.MeshStandardMaterial({color:0x3a4858,metalness:.7,roughness:.4});
@@ -406,7 +376,6 @@ for(let i=0;i<8;i++){
   });
 }
 
-// Hanging lamps
 const lmpM=new THREE.MeshStandardMaterial({color:0x1c2430,roughness:.6});
 const blbM=new THREE.MeshStandardMaterial({color:0xfffae0,emissive:0xfffae0,emissiveIntensity:1.8});
 for(let i=0;i<(isMobile?4:8);i++){
@@ -419,11 +388,9 @@ for(let i=0;i<(isMobile?4:8);i++){
   cord.position.y=.1;grp.add(cord);
   grp.position.set(0,7.7,-i*7.5-3);scene.add(grp);
 }
-// Distant machinery silhouettes
 const machM=new THREE.MeshStandardMaterial({color:0x0c1420,roughness:1});
 [[-7,2,-20],[-7,1.2,-42],[7,2.5,-28],[7,1.8,-55],[-7,1.5,-62],[7,2,-72]].forEach(([x,h,z])=>{
-  const m=new THREE.Mesh(new THREE.BoxGeometry(2,h*2,3.5),machM);
-  m.position.set(x,h,z);scene.add(m);
+  const m=new THREE.Mesh(new THREE.BoxGeometry(2,h*2,3.5),machM);  m.position.set(x,h,z);scene.add(m);
 });
 
 // ═══════════════════════════════
@@ -440,7 +407,8 @@ function makeCanTexture(){
   bg.addColorStop(0.38,'#eef2f8');
   bg.addColorStop(0.5, '#f6faff');
   bg.addColorStop(0.62,'#dce4f0');
-  bg.addColorStop(0.85,'#c0c8d8');  bg.addColorStop(1,   '#a8b0bc');
+  bg.addColorStop(0.85,'#c0c8d8');
+  bg.addColorStop(1,   '#a8b0bc');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
 
   ctx.globalAlpha=0.06;
@@ -471,8 +439,7 @@ function makeCanTexture(){
   ctx.font=`bold ${fontSize}px Arial Black, Arial, sans-serif`;
   ctx.fillText('АРНЕСТ', W/2+2, bandY+bandH/2+2);
   ctx.shadowBlur=0;
-  ctx.fillText('АРНЕСТ', W/2, bandY+bandH/2);
-  ctx.restore();
+  ctx.fillText('АРНЕСТ', W/2, bandY+bandH/2);  ctx.restore();
 
   ctx.fillStyle='rgba(255,255,255,0.75)';
   ctx.font=`bold ${Math.round(W*0.042)}px Arial, sans-serif`;
@@ -486,9 +453,9 @@ function makeCanTexture(){
   }
   ctx.globalAlpha=1;
 
-  const t=new THREE.CanvasTexture(c);
-  return t;
+  return new THREE.CanvasTexture(c);
 }
+
 function makeCan(){
   const g=new THREE.Group();
   const R=0.38, H=1.80, TOP_R=0.30, NECK=0.22, SEG=isMobile?16:28;
@@ -521,8 +488,7 @@ function makeCan(){
   [0.44,0.28].forEach((r,idx)=>{
     const ring=new THREE.Mesh(new THREE.TorusGeometry(R*r,0.018,5,SEG),
       new THREE.MeshStandardMaterial({color:0x98a0b0,metalness:0.95,roughness:0.1}));
-    ring.rotation.x=Math.PI/2; ring.position.y=-H/2+0.025+idx*0.008; g.add(ring);
-  });
+    ring.rotation.x=Math.PI/2; ring.position.y=-H/2+0.025+idx*0.008; g.add(ring);  });
 
   const lidM=new THREE.MeshStandardMaterial({color:0xc0c8d8,metalness:0.97,roughness:0.06});
   const topDisk=new THREE.Mesh(new THREE.CircleGeometry(TOP_R-0.01,SEG),lidM);
@@ -538,7 +504,8 @@ function makeCan(){
   const tabM=new THREE.MeshStandardMaterial({color:0x8898a8,metalness:0.9,roughness:0.20});
   const tabRing=new THREE.Mesh(new THREE.TorusGeometry(0.058,0.016,6,14),tabM);
   tabRing.position.set(0.08,H/2+0.014,0); tabRing.rotation.x=Math.PI*0.3; g.add(tabRing);
-  const armCurve=new THREE.CatmullRomCurve3([    new THREE.Vector3(0,0,0),new THREE.Vector3(0.05,0.007,0),
+  const armCurve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0,0,0),new THREE.Vector3(0.05,0.007,0),
     new THREE.Vector3(0.13,-0.007,0),new THREE.Vector3(0.17,-0.010,0)
   ]);
   const arm=new THREE.Mesh(new THREE.TubeGeometry(armCurve,8,0.010,5,false),tabM);
@@ -570,8 +537,7 @@ const spVel=Array.from({length:SP_MAX},()=>({x:0,y:0,z:0,l:0}));
 for(let i=0;i<SP_MAX;i++) spPos[i*3+1]=-200;
 spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
 const spMat=new THREE.PointsMaterial({color:0xffcc00,size:.13,transparent:true,opacity:.9,sizeAttenuation:true});
-scene.add(new THREE.Points(spGeo,spMat));
-let spActive=0;
+scene.add(new THREE.Points(spGeo,spMat));let spActive=0;
 
 function burstSparks(x,y,z,n){
   for(let i=0;i<(n||20)&&spActive<SP_MAX;i++){
@@ -587,7 +553,8 @@ function tickSparks(dt){
       const last=spActive-1;
       spPos[i*3]=spPos[last*3];spPos[i*3+1]=spPos[last*3+1];spPos[i*3+2]=spPos[last*3+2];
       spVel[i]=spVel[last];spPos[last*3+1]=-200;spActive--;
-    }else{      v.y-=dt*.45;
+    }else{
+      v.y-=dt*.45;
       spPos[i*3]+=v.x*dt*60;spPos[i*3+1]+=v.y*dt*60;spPos[i*3+2]+=v.z*dt*60;
       i++;
     }
@@ -620,7 +587,6 @@ function spawnObs(){
 
   let posX=0, lane=1;
   const cy=def.cy!==undefined?def.cy:def.h/2;
-
   if(!def.full){
     lane=Math.floor(Math.random()*3);
     posX=(lane-1)*LANE_W;
@@ -657,7 +623,6 @@ const BUCKET_COLORS=[
 function makeBucket(colorDef){
   const g=new THREE.Group();
   const SEG=isMobile?8:14;
-
   const bodyM=new THREE.MeshStandardMaterial({
     color:colorDef.metal, metalness:0.85, roughness:0.25,
     emissive:colorDef.metal, emissiveIntensity:0.08
@@ -670,8 +635,7 @@ function makeBucket(colorDef){
   bot.rotation.x=-Math.PI/2; bot.position.y=0.002; g.add(bot);
 
   const ribM=new THREE.MeshStandardMaterial({color:0x888890,metalness:0.95,roughness:0.15});
-  [0.10, 0.24].forEach(y=>{
-    const rib=new THREE.Mesh(new THREE.TorusGeometry(0.195+y*0.08,0.012,5,SEG),ribM);
+  [0.10, 0.24].forEach(y=>{    const rib=new THREE.Mesh(new THREE.TorusGeometry(0.195+y*0.08,0.012,5,SEG),ribM);
     rib.rotation.x=Math.PI/2; rib.position.y=y+0.06; g.add(rib);
   });
 
@@ -685,6 +649,7 @@ function makeBucket(colorDef){
   });
   const paintSurf=new THREE.Mesh(new THREE.CircleGeometry(0.205,SEG),paintM);
   paintSurf.rotation.x=Math.PI/2; paintSurf.position.y=0.365; g.add(paintSurf);
+
   const dripM=new THREE.MeshStandardMaterial({
     color:colorDef.paint, metalness:0.0, roughness:0.4,
     emissive:colorDef.paint, emissiveIntensity:0.2
@@ -699,7 +664,6 @@ function makeBucket(colorDef){
   ]);
   const handle=new THREE.Mesh(new THREE.TubeGeometry(handleCurve,12,0.012,6,false),handleM);
   g.add(handle);
-
   return g;
 }
 
@@ -720,7 +684,6 @@ function spawnCollect(){
 // ═══════════════════════════════
 const LANES_X=[-2,0,2];
 const GRAV=-25, JUMP_V=10.5, SLIDE_DUR=.55;
-
 let G={
   running:false, lane:1, targetX:0, y:0.90, vy:0,
   jumping:false, sliding:false, slideT:0,
@@ -734,7 +697,8 @@ let G={
 function resetG(){
   G.lane=1;G.targetX=0;G.y=0.90;G.vy=0;
   G.jumping=false;G.sliding=false;G.slideT=0;
-  G.lives=3;G.score=0;G.speed=6.5;G.dist=0;  G.combo=0;G.comboT=0;G.inv=0;
+  G.lives=3;G.score=0;G.speed=6.5;G.dist=0;
+  G.combo=0;G.comboT=0;G.inv=0;
   G.spawnT=0;G.cspawnT=0;G.shake=0;G.tiltZ=0;
 }
 
@@ -748,21 +712,16 @@ function checkCollisions(){
   for(let i=obsPool.length-1;i>=0;i--){
     const o=obsPool[i];
     if(!o.userData.active) continue;
-
     const {def,posX,cy,full}=o.userData;
     const oz=o.position.z;
-
     if(Math.abs(pz-oz) > def.d/2+.28) continue;
     const dx=Math.abs(px-posX);
     const hitHalfW=full ? (BELT_W/2-.05) : (def.w/2-.1);
     if(dx > HIT_R+hitHalfW-.18) continue;
-
     const oBot=cy-def.h/2, oTop=cy+def.h/2;
     if(pTop < oBot+.06 || pBot > oTop-.06) continue;
-
     if(o.userData.type===1 && pBot>oTop-.12) continue;
     if(o.userData.type===2 && G.sliding) continue;
-
     takeDamage();
     o.userData.active=false;
     o.traverse(c=>{
@@ -774,8 +733,7 @@ function checkCollisions(){
 }
 
 function checkCoins(){
-  const px=player.position.x, py=player.position.y, pz=player.position.z;
-  for(let i=collectPool.length-1;i>=0;i--){
+  const px=player.position.x, py=player.position.y, pz=player.position.z;  for(let i=collectPool.length-1;i>=0;i--){
     const c=collectPool[i];
     if(!c.userData.active) continue;
     if(Math.abs(px-c.position.x)<.68 && Math.abs(pz-c.position.z)<.72 && Math.abs(py-c.position.y)<.92){
@@ -783,7 +741,8 @@ function checkCoins(){
       G.combo++;G.comboT=2.5;G.score+=10*G.combo;
       burstSparks(c.position.x,c.position.y,c.position.z,20);
       doFlash('gold');
-      if(G.combo>=3) showCombo();    }
+      if(G.combo>=3) showCombo();
+    }
   }
 }
 
@@ -823,8 +782,7 @@ window.addEventListener('keyup',e=>{keys[e.code]=false;});
 
 let tx=0,ty=0;
 canvas.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
-canvas.addEventListener('touchend',e=>{
-  if(!G.running) return;
+canvas.addEventListener('touchend',e=>{  if(!G.running) return;
   const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
   if(Math.abs(dx)>18||Math.abs(dy)>18){
     Math.abs(dx)>Math.abs(dy) ? (dx<0?moveLane(-1):moveLane(1)) : (dy<0?doJump():doSlide());
@@ -832,7 +790,8 @@ canvas.addEventListener('touchend',e=>{
 },{passive:true});
 
 function moveLane(d){
-  const nl=Math.max(0,Math.min(2,G.lane+d));  if(nl===G.lane) return;
+  const nl=Math.max(0,Math.min(2,G.lane+d));
+  if(nl===G.lane) return;
   G.lane=nl;G.targetX=LANES_X[G.lane];G.tiltZ=d<0?.2:-.2;
 }
 function doJump(){
@@ -872,8 +831,7 @@ function updPlayer(dt){
 }
 
 function updBelt(dt){
-  const move=G.speed*dt;
-  const WRAP_FRONT=TILE_L*1.5;
+  const move=G.speed*dt;  const WRAP_FRONT=TILE_L*1.5;
   const PUSH_BACK=N_TILES*TILE_L;
   beltTiles.forEach(tile=>{
     tile.position.z+=move;
@@ -902,21 +860,27 @@ function updCoins(dt){
     if(c.position.z>10){scene.remove(c);collectPool.splice(i,1);G.combo=0;}
   }
 }
+
+// ИСПРАВЛЕНИЕ: Камера следует за игроком
 function updCam(dt){
-  if(G.shake>0){
-    G.shake-=dt;
-    camera.position.x=(Math.random()-.5)*G.shake*.5;
-    camera.position.y=3.8+(Math.random()-.5)*G.shake*.35;
+  if(G.shake > 0){
+    G.shake -= dt;
+    camera.position.x = (Math.random()-.5) * G.shake * .5;
+    camera.position.y = 5.0 + (Math.random()-.5) * G.shake * .35;
   } else {
-    camera.position.x+=(0-camera.position.x)*dt*6;
-    camera.position.y+=(3.8-camera.position.y)*dt*6;
+    // Камера плавно сдвигается в сторону движения игрока (на 30% от смещения)
+    const targetX = player.position.x * 0.3;
+    camera.position.x += (targetX - camera.position.x) * dt * 4;
+    camera.position.y += (5.0 - camera.position.y) * dt * 4;
   }
+  // Камера смотрит чуть вперёд
+  camera.lookAt(player.position.x * 0.1, 1.5, -4);
 }
+
 let _lframe=0;
 function updLights(dt){
   _lframe++;
-  if(_lframe%2!==0) return;
-  const t=Date.now()*.001;
+  if(_lframe%2!==0) return;  const t=Date.now()*.001;
   fLights.forEach((l,i)=>{
     l.intensity=.45+Math.sin(t*1.9+i*1.3)*.25;
     l.position.z+=G.speed*dt*2;
@@ -930,7 +894,8 @@ function updScore(dt){
   if(G.comboT>0) G.comboT-=dt;
 }
 function updHUD(){
-  document.getElementById('sc').textContent=G.score.toLocaleString();  document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
+  document.getElementById('sc').textContent=G.score.toLocaleString();
+  document.getElementById('spd').textContent=(G.speed/6.5).toFixed(1)+'×';
   document.getElementById('pbf').style.width=(Math.min((G.dist/600)%1,1)*100)+'%';
 }
 function renderLives(){
@@ -965,7 +930,6 @@ function loop(ts){
   renderer.render(scene,camera);
 }
 requestAnimationFrame(loop);
-
 window.addEventListener('resize',()=>{
   camera.aspect=innerWidth/innerHeight;
   camera.updateProjectionMatrix();
@@ -980,6 +944,7 @@ function startGame(){
   const dept=document.getElementById('di').value;
   G.name=name;G.dept=dept;
   document.getElementById('pname-hud').textContent=name;
+
   obsPool.slice().forEach(o=>scene.remove(o));
   obsPool.length=0;
   collectPool.slice().forEach(c=>scene.remove(c));
@@ -1013,8 +978,7 @@ function endGame(){
 
   (async()=>{
     try{
-      await saveScore(G.name,G.dept,G.score);
-      const scores=await getScores();
+      await saveScore(G.name,G.dept,G.score);      const scores=await getScores();
       const rank=scores.findIndex(s=>s.name===G.name&&s.dept===G.dept)+1;
       const msgs=['🥇 РЕКОРД ЗАВОДА — ТЫ ЛЕГЕНДА!','🥈 2-е место — почти рекорд!','🥉 3-е место — в топе!'];
       document.getElementById('go-msg').textContent=rank>=1&&rank<=3?msgs[rank-1]:(rank>0?`#${rank} в рейтинге завода`:'⭐ Результат сохранён!');
@@ -1028,7 +992,8 @@ function endGame(){
 
 // ── BUTTON LISTENERS ──
 document.getElementById('sb2').addEventListener('click',startGame);
-document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});document.getElementById('rb').addEventListener('click',()=>{document.getElementById('gos').classList.add('h');startGame();});
+document.getElementById('ni').addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});
+document.getElementById('rb').addEventListener('click',()=>{document.getElementById('gos').classList.add('h');startGame();});
 document.getElementById('mb').addEventListener('click',()=>{
   document.getElementById('gos').classList.add('h');
   document.getElementById('ss').classList.remove('h');
@@ -1044,32 +1009,25 @@ function generateQR() {
   const container = document.getElementById('qrcode');
   if (!container) return;
   container.innerHTML = '';
-  
   const shareUrl = window.location.href.split('#')[0];
   const urlInput = document.getElementById('share-url');
   if (urlInput) urlInput.value = shareUrl;
-  
   if (typeof QRCode !== 'undefined') {
     qrCode = new QRCode(container, {
       text: shareUrl,
-      width: 200,
-      height: 200,
-      colorDark: '#07090e',
-      colorLight: '#ffffff',
+      width: 200, height: 200,
+      colorDark: '#07090e', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
   }
 }
-
 function showQRModal() {
   generateQR();
   const modal = document.getElementById('qr-modal');
   const startScreen = document.getElementById('ss');
   if (modal) modal.classList.remove('h');
   if (startScreen) startScreen.classList.add('h');
-}
-
-function hideQRModal() {
+}function hideQRModal() {
   const modal = document.getElementById('qr-modal');
   const startScreen = document.getElementById('ss');
   if (modal) modal.classList.add('h');
@@ -1077,27 +1035,22 @@ function hideQRModal() {
 }
 
 // ═══════════════════════════════
-//  PWA INSTALL SYSTEM// ═══════════════════════════════
+//  PWA INSTALL SYSTEM
+// ═══════════════════════════════
 let deferredPrompt;
 const installBtn = document.getElementById('install-btn');
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   if (installBtn) installBtn.style.display = 'block';
-  console.log('[PWA] Доступна установка');
 });
-
 window.addEventListener('appinstalled', () => {
   if (installBtn) installBtn.style.display = 'none';
-  console.log('[PWA] Приложение установлено');
 });
-
 async function promptInstall() {
   if (!deferredPrompt) return false;
   deferredPrompt.prompt();
   const { outcome } = await deferredPrompt.userChoice;
-  console.log(`[PWA] Установка: ${outcome}`);
   deferredPrompt = null;
   return outcome === 'accepted';
 }
@@ -1106,7 +1059,6 @@ async function promptInstall() {
 //  INITIALIZATION
 // ═══════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // QR System
   const inviteBtn = document.getElementById('invite-btn');
   const qrClose = document.getElementById('qr-close');
   const qrModal = document.getElementById('qr-modal');
@@ -1114,41 +1066,33 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (inviteBtn) inviteBtn.addEventListener('click', showQRModal);
   if (qrClose) qrClose.addEventListener('click', hideQRModal);
-  
-  if (qrModal) {
-    qrModal.addEventListener('click', (e) => {
-      if (e.target.id === 'qr-modal') hideQRModal();
-    });
-  }
+  if (qrModal) qrModal.addEventListener('click', (e) => { if (e.target.id === 'qr-modal') hideQRModal(); });
   
   if (copyBtn) {
     copyBtn.addEventListener('click', async () => {
       const input = document.getElementById('share-url');
       if (!input) return;
       try {
-        await navigator.clipboard.writeText(input.value);        const originalText = copyBtn.textContent;
+        await navigator.clipboard.writeText(input.value);
+        const originalText = copyBtn.textContent;
         copyBtn.textContent = '✓ Скопировано!';
-        copyBtn.style.borderColor = 'var(--fire)';
-        copyBtn.style.color = 'var(--fire)';
+        copyBtn.style.borderColor = 'var(--fire)';        copyBtn.style.color = 'var(--fire)';
         setTimeout(() => {
           copyBtn.textContent = originalText;
           copyBtn.style.borderColor = '';
           copyBtn.style.color = '';
         }, 2000);
       } catch {
-        input.select();
-        document.execCommand('copy');
+        input.select(); document.execCommand('copy');
       }
     });
   }
   
-  // Pre-generate QR if modal exists
   if (document.getElementById('qrcode')) {
     generateQR();
     if (qrModal) qrModal.classList.add('h');
   }
   
-  // Install button
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
       const installed = await promptInstall();
@@ -1164,8 +1108,6 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((reg) => {
-        console.log('[PWA] SW зарегистрирован:', reg.scope);
-        
         reg.addEventListener('updatefound', () => {
           const newWorker = reg.installing;
           newWorker.addEventListener('statechange', () => {
@@ -1175,7 +1117,8 @@ if ('serviceWorker' in navigator) {
           });
         });
       })
-      .catch((err) => console.error('[PWA] Ошибка регистрации SW:', err));  });
+      .catch((err) => console.error('[PWA] Ошибка регистрации SW:', err));
+  });
 }
 </script>
 </body>
