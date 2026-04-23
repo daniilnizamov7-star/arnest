@@ -1,4 +1,4 @@
-const CACHE_NAME = 'can-rush-v1';
+const CACHE_NAME = 'can-rush-v2';
 const urlsToCache = [
   '/',
   '/index.html',
